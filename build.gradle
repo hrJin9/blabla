@@ -1,0 +1,79 @@
+buildscript {
+	ext {
+		restdocsApiSpecVersion = '0.18.2'
+	}
+}
+
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.1.1'
+	id 'io.spring.dependency-management' version '1.1.4'
+
+	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+	id 'org.hidetake.swagger.generator' version '2.18.2'
+}
+
+group = 'com.blabla'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '17'
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// REST Docs
+	testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+openapi3 {
+	setServer("http://localhost:8080")
+	title = "블라블라 API Docs"
+	description = "블라블라 API 명세서"
+	version = "0.0.1"
+	format = "json"
+
+	outputDirectory = 'build/resources/main/static/docs'
+}
+
+task createOutputDirectory {
+	doFirst {
+		file(openapi3.outputDirectory).mkdirs()
+	}
+}
+
+tasks.withType(GenerateSwaggerUI) {
+	dependsOn 'openapi3'
+
+	delete file('src/main/resources/static/docs/')
+	copy {
+		from "build/resources/main/static/docs"
+		into "src/main/resources/static/docs/"
+	}
+}
+
+bootJar {
+	dependsOn 'createOutputDirectory', ':openapi3'
+}
