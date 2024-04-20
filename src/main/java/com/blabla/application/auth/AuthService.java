@@ -31,6 +31,11 @@ public class AuthService {
         Member member =memberRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new LoginBadRequestException("존재하지 않는 이메일입니다."));
         member.checkPassword(dto.getPassword());
-        return tokenGenerator.generate(member.getEmail());
+        return tokenGenerator.generate(member.getId());
+    }
+
+    public AuthTokenResponse reissueToken(String refreshToken) {
+
+
     }
 }

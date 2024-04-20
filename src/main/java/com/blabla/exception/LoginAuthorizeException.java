@@ -1,6 +1,6 @@
 package com.blabla.exception;
 
-public class LoginAuthorizeException extends UnAuthorizedException {
+public class LoginAuthorizeException extends UnAuthorizationException {
     public LoginAuthorizeException(String message) {
         super(message);
     }

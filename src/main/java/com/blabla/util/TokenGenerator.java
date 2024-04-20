@@ -17,13 +17,15 @@ public class TokenGenerator {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthTokenResponse generate(String email) {
+    public AuthTokenResponse generate(Long id) {
         Long now = (new Date()).getTime();
         Date accessTokenExpiresAt = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         Date refreshTokenExpiresAt = new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
-        String accessToken = jwtTokenProvider.generate(email, accessTokenExpiresAt);
-        String refreshToken = jwtTokenProvider.generate(email, refreshTokenExpiresAt);
+        String subject = id.toString();
+
+        String accessToken = jwtTokenProvider.generate(subject, accessTokenExpiresAt);
+        String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiresAt);
 
         return AuthTokenResponse.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
@@ -32,8 +34,8 @@ public class TokenGenerator {
         return jwtTokenProvider.isValidToken(accessToken);
     }
 
-    public String extractMemberEmail(String accessToken) {
-        return jwtTokenProvider.extractSubject(accessToken);
+    public Long extractMemberId(String accessToken) {
+        return Long.valueOf(jwtTokenProvider.extractSubject(accessToken));
     }
 
 }

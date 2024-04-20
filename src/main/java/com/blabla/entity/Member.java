@@ -30,15 +30,15 @@ public class Member extends BaseEntity {
 
     private Boolean deleted = Boolean.FALSE;
 
-    public static Member of(String email, String password, String nickName, String phone) {
-        return new Member(email, PasswordEncryptor.encrypt(password), nickName, phone);
-    }
-
     public Member(String email, String encryptedPassword, String nickName, String phone) {
         this.email = email;
         this.encryptedPassword = encryptedPassword;
         this.nickName = nickName;
         this.phone = phone;
+    }
+
+    public static Member of(String email, String password, String nickName, String phone) {
+        return new Member(email, PasswordEncryptor.encrypt(password), nickName, phone);
     }
 
     public void checkPassword(String password) {

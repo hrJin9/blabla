@@ -7,6 +7,4 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthInfo {
     private final Long id;
-    private final String nickName;
-    private final String email;
 }
