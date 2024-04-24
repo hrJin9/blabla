@@ -31,6 +31,7 @@ repositories {
 }
 
 dependencies {
+	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
 	implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -42,6 +43,7 @@ dependencies {
 	// Swagger + REST Docs
 	testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	swaggerUI 'org.webjars:swagger-ui:4.11.1'
 
 	// jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -49,8 +51,10 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+swaggerSources {
+	sample {
+		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
+	}
 }
 
 openapi3 {
@@ -58,10 +62,14 @@ openapi3 {
 	title = "블라블라 API Docs"
 	description = "블라블라 API 명세서"
 	version = "0.0.1"
-	format = "json"
-
-	outputDirectory = 'build/resources/main/static/docs'
+	format = "yaml"
+//	outputDirectory = 'build/resources/main/static/docs'
 }
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
 
 task createOutputDirectory {
 	doFirst {
@@ -71,11 +79,10 @@ task createOutputDirectory {
 
 tasks.withType(GenerateSwaggerUI) {
 	dependsOn 'openapi3'
-
 	delete file('src/main/resources/static/docs/')
 	copy {
 		from "build/resources/main/static/docs"
-		into "src/main/resources/static/docs/"
+		into "src/main/resources/static/docs"
 	}
 }
 
