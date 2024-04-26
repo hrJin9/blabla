@@ -158,7 +158,6 @@ public class AuthServiceTest {
         when(blackListRepository.save(any()))
                 .thenReturn(blackList);
 
-
         // when
         String invalidRefreshToken = authService.logout(refreshToken, id);
 
