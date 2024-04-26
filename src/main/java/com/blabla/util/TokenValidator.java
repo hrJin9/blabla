@@ -11,7 +11,20 @@ public class TokenValidator {
     private final TokenGenerator tokenGenerator;
     private final BlackListRepository blackListRepository;
 
-    public void validateToken(String refreshToken) {
+    public void validateToken(String refreshToken, Long id) {
+        this.isBearerToken(refreshToken);
+        this.isValidToken(refreshToken);
+        this.validateTokenMemberId(refreshToken, id);
+        this.validateLogoutToken(refreshToken);
+    }
+
+    public void isBearerToken(String refreshToken) {
+        if (!BearerParser.isBearerAuthType(refreshToken)) {
+            throw new UnAuthorizationException("인증 가능한 refresh token이 아닙니다.");
+        }
+    }
+
+    public void isValidToken(String refreshToken) {
         if (!tokenGenerator.isValidToken(refreshToken)) {
             throw new UnAuthorizationException("유효하지 않은 refresh token입니다.");
         }
@@ -25,9 +38,8 @@ public class TokenValidator {
     }
 
     public void validateLogoutToken(String refreshToken) {
-        if (blackListRepository.findByInvalidRefreshToken(refreshToken).isEmpty()) {
+        if (blackListRepository.findByInvalidRefreshToken(refreshToken).isPresent()) {
             throw new UnAuthorizationException("이미 로그아웃된 사용자입니다.");
         }
-
     }
 }

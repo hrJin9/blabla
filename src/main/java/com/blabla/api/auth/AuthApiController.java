@@ -6,6 +6,7 @@ import com.blabla.api.auth.response.AuthTokenResponse;
 import com.blabla.application.auth.AuthService;
 import com.blabla.application.auth.dto.MemberCreateDto;
 import com.blabla.application.auth.dto.MemberLoginDto;
+import com.blabla.config.resolver.AuthInfo;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
@@ -22,12 +23,13 @@ import java.net.URI;
 @RequiredArgsConstructor
 @RequestMapping("/api/auth")
 public class AuthApiController {
+
     private final AuthService authService;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody MemberCreateRequest request) {
         authService.register(MemberCreateDto.from(request));
-        return  ResponseEntity.created(URI.create("/api/auth/login")).build();
+        return ResponseEntity.created(URI.create("/api/auth/login")).build();
     }
 
     @PostMapping("/login")
@@ -38,8 +40,9 @@ public class AuthApiController {
 
     @GetMapping("/reissue-token")
     public ResponseEntity<AuthTokenResponse> reissueToken(@CookieValue(name = "refresh_token") String refreshToken,
+                                                          AuthInfo member,
                                                           HttpServletResponse response) {
-        AuthTokenResponse token = authService.reissueToken(refreshToken);
+        AuthTokenResponse token = authService.reissueToken(refreshToken, member.id());
         ResponseCookie cookie = ResponseCookie.from("refresh_token", token.getRefreshToken())
                 .httpOnly(true)
                 .secure(true)
@@ -48,5 +51,12 @@ public class AuthApiController {
                 .build();
         response.addHeader(SET_COOKIE, cookie.toString());
         return ResponseEntity.ok(token);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestHeader(name = "refresh_token") String refreshToken,
+                                       AuthInfo authInfo) {
+        authService.logout(refreshToken, authInfo.id());
+        return ResponseEntity.noContent().build();
     }
 }
