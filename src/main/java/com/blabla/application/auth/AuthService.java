@@ -27,7 +27,9 @@ public class AuthService {
             throw new BadRequestException("이미 존재하는 이메일입니다.");
         }
 
-        Member member = Member.of(dto.email(),
+        Member member = Member.of(
+                dto.loginId(),
+                dto.email(),
                 dto.password(),
                 dto.nickName(),
                 dto.phone());

@@ -20,6 +20,8 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
+    private String loginId;
+
     private String email;
 
     private String encryptedPassword;
@@ -31,15 +33,18 @@ public class Member extends BaseEntity {
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Member(String email, String encryptedPassword, String nickName, String phone) {
+    public Member(String loginId, String email, String encryptedPassword, String nickName, String phone) {
+        this.loginId = loginId;
         this.email = email;
         this.encryptedPassword = encryptedPassword;
         this.nickName = nickName;
         this.phone = phone;
     }
 
-    public static Member of(String email, String password, String nickName, String phone) {
-        return new Member(email,
+    public static Member of(String loginId, String email, String password, String nickName, String phone) {
+        return new Member(
+                loginId,
+                email,
                 PasswordEncryptor.encrypt(password),
                 nickName,
                 phone);
