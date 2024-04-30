@@ -26,8 +26,8 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
         String authorization = webRequest.getHeader(HttpHeaders.AUTHORIZATION);
 
         String accessToken = BearerParser.parseAuthorization(authorization);
-        Long memberId = tokenGenerator.extractMemberId(accessToken);
+        Long id = tokenGenerator.extractMemberId(accessToken);
 
-        return new AuthInfo(memberId);
+        return new AuthInfo(id);
     }
 }
