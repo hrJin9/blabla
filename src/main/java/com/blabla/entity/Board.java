@@ -27,7 +27,7 @@ public class Board extends BaseEntity {
     private String category;
 
     @Enumerated(EnumType.STRING)
-    private BoardStatus boardStatus;
+    private BoardVisibility boardVisibility;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
@@ -36,10 +36,10 @@ public class Board extends BaseEntity {
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Board(String subject, String content, BoardStatus boardStatus) {
+    public Board(String subject, String content, BoardVisibility boardVisibility) {
         this.subject = subject;
         this.content = content;
-        this.boardStatus = boardStatus;
+        this.boardVisibility = boardVisibility;
     }
 
 }

@@ -7,30 +7,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.web.bind.annotation.GetMapping;
 
+import java.awt.image.LookupOp;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE category SET deleted = true WHERE category_id = ?")
+@SQLDelete(sql = "UPDATE tag SET deleted = true WHERE tag_id = ?")
 @Where(clause = "deleted = false")
-public class Category extends BaseEntity {
+public class Tag extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "tag_id")
     private Long id;
 
-    private String categoryName;
-
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @JoinColumn(name = "board_id")
     private List<Board> boards = new ArrayList<>();
 
+    private String tagName;
+
     @Builder
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
+    public Tag(String tagName) {
+        this.tagName = tagName;
     }
 }

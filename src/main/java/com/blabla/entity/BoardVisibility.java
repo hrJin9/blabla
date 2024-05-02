@@ -1,6 +1,6 @@
 package com.blabla.entity;
 
-public enum BoardStatus {
+public enum BoardVisibility {
     PUBLIC,
     PRIVATE
 }
