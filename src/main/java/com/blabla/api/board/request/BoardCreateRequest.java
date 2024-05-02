@@ -1,8 +1,8 @@
 package com.blabla.api.board.request;
 
-import com.blabla.entity.BoardStatus;
+import com.blabla.entity.BoardVisibility;
 
 public record BoardCreateRequest(String subject,
                                  String content,
-                                 BoardStatus boardStatus) {
+                                 BoardVisibility boardVisibility) {
 }
