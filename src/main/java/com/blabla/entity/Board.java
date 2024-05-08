@@ -17,14 +17,16 @@ public class Board extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column("board_id")
+    @Column(name = "board_id")
     private Long id;
 
     private String subject;
 
     private String content;
 
-    private String category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Enumerated(EnumType.STRING)
     private BoardVisibility boardVisibility;
