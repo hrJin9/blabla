@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    private static final String[] excludePaths = {"/api/auth/login","/api/auth/register","/api/swagger-ui/**","/api/docs/**"};
+    private static final String[] excludePaths = {"/api/auth/login","/api/auth/register","/api/swagger-ui/**","/api/docs/**", "/api/boards/**", "/api/categories/**"};
 
     private final AuthInterceptor authInterceptor;
 
