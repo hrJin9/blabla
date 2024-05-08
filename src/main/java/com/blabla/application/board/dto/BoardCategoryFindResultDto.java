@@ -1,6 +1,6 @@
 package com.blabla.application.board.dto;
 
-public record BoardCategoryFindDto(
+public record BoardCategoryFindResultDto(
         String category,
         Long boardCount
 ) {
