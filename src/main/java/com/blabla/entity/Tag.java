@@ -23,8 +23,7 @@ public class Tag extends BaseEntity {
     @Column(name = "tag_id")
     private Long id;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    @JoinColumn(name = "board_id")
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
     private String tagName;

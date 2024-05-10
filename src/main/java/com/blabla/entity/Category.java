@@ -25,7 +25,7 @@ public class Category extends BaseEntity {
 
     private String categoryName;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
     @Builder
