@@ -31,10 +31,10 @@ public class BoardFindApiController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/boards", params = "board-id")
+    @GetMapping( "/boards/{boardId}")
     public ResponseEntity<BoardFindResponse> findBoardByBoardId(
             AuthInfo auth,
-            @RequestParam("board-id") Long boardId
+            @PathVariable Long boardId
     ) {
 
         BoardFindResultDto dto = boardFindService.findBoardByBoardId(auth.id(), boardId);
@@ -56,10 +56,10 @@ public class BoardFindApiController {
     @GetMapping(value = "/categories", params = "name")
     public ResponseEntity<List<BoardFindResponse>> findBoardsByCategory(
             AuthInfo auth,
-            @RequestParam("name") String categoryName
+            @RequestParam("category") String categoryName
     ) {
 
-        List<BoardsFindResultDto> dtoList = boardFindService.findBoardsByCategory(auth.id(), category, BoardsFindResultDto.from(request));
+        List<BoardFindResultDto> dtoList = boardFindService.findBoardsByCategory(auth.id(), categoryName);
         List<BoardFindResponse> response = dtoList.stream()
                 .map(BoardFindResponse::from)
                 .toList();

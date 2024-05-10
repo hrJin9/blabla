@@ -10,7 +10,7 @@ public record BoardFindResultDto(
         BoardVisibility boardVisibility,
         String category
 ) {
-    public static BoardFindResultDto of(Board board) {
+    public static BoardFindResultDto from(Board board) {
         return new BoardFindResultDto(
                 board.getSubject(),
                 board.getContent(),

@@ -7,13 +7,14 @@ public record BoardFindResponse(
         String subject,
         String content,
         BoardVisibility boardVisibility,
-        String memberId) {
+        String category) {
 
     public static BoardFindResponse from(BoardFindResultDto dto) {
         return new BoardFindResponse(
                 dto.subject(),
                 dto.content(),
-                dto.boardVisibility()
+                dto.boardVisibility(),
+                dto.category()
         );
     }
 }
