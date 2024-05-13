@@ -5,12 +5,12 @@ import com.blabla.application.auth.dto.MemberCreateDto;
 import com.blabla.application.auth.dto.MemberLoginDto;
 import com.blabla.entity.BlackList;
 import com.blabla.entity.Member;
-import com.blabla.exception.BadRequestException;
-import com.blabla.exception.LoginBadRequestException;
+import com.blabla.exception.AuthBadRequestException;
+import com.blabla.exception.MemberNotFoundException;
 import com.blabla.repository.auth.BlackListRepository;
 import com.blabla.repository.auth.MemberRepository;
 import com.blabla.util.TokenGenerator;
-import com.blabla.util.TokenValidator;
+import com.blabla.util.RefreshTokenValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,11 +20,11 @@ public class AuthService {
     private final MemberRepository memberRepository;
     private final BlackListRepository blackListRepository;
     private final TokenGenerator tokenGenerator;
-    private final TokenValidator tokenValidator;
+    private final RefreshTokenValidator refreshTokenValidator;
 
     public Long register(MemberCreateDto dto) {
         if (memberRepository.findByEmail(dto.email()).isPresent()) {
-            throw new BadRequestException("이미 존재하는 이메일입니다.");
+            throw new AuthBadRequestException("이미 존재하는 이메일입니다.");
         }
 
         Member member = Member.of(
@@ -40,18 +40,18 @@ public class AuthService {
 
     public AuthTokenResponse login(MemberLoginDto dto) {
         Member member = memberRepository.findByEmail(dto.email())
-                .orElseThrow(() -> new LoginBadRequestException("존재하지 않는 이메일입니다."));
+                .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 이메일입니다."));
         member.checkPassword(dto.password());
         return tokenGenerator.generate(member.getId());
     }
 
     public AuthTokenResponse reissueToken(String refreshToken, Long id) {
-        tokenValidator.validateToken(refreshToken, id);
+        refreshTokenValidator.validateToken(refreshToken, id);
         return tokenGenerator.generate(id);
     }
 
     public String logout(String refreshToken, Long id) {
-        tokenValidator.validateToken(refreshToken, id);
+        refreshTokenValidator.validateToken(refreshToken, id);
         BlackList blackList = blackListRepository.save(new BlackList(refreshToken));
         return blackList.getInvalidRefreshToken();
     }

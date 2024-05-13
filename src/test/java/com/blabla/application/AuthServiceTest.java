@@ -6,20 +6,16 @@ import com.blabla.application.auth.dto.MemberCreateDto;
 import com.blabla.application.auth.dto.MemberLoginDto;
 import com.blabla.entity.BlackList;
 import com.blabla.entity.Member;
-import com.blabla.exception.BadRequestException;
-import com.blabla.exception.LoginAuthorizeException;
-import com.blabla.exception.LoginBadRequestException;
-import com.blabla.exception.UnAuthorizationException;
+import com.blabla.exception.LoginUnAuthorizedException;
+import com.blabla.exception.AuthBadRequestException;
 import com.blabla.repository.auth.BlackListRepository;
 import com.blabla.repository.auth.MemberRepository;
 import com.blabla.util.TokenGenerator;
-import com.blabla.util.TokenValidator;
-import org.junit.jupiter.api.BeforeAll;
+import com.blabla.util.RefreshTokenValidator;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +40,7 @@ public class AuthServiceTest {
     private TokenGenerator tokenGenerator;
 
     @Mock
-    private TokenValidator tokenValidator;
+    private RefreshTokenValidator refreshTokenValidator;
 
     private static Member member;
     private static BlackList blackList;
@@ -89,7 +85,7 @@ public class AuthServiceTest {
 
         // when, then
         assertThatThrownBy(() -> authService.login(memberLoginDto))
-                .isInstanceOf(LoginBadRequestException.class);
+                .isInstanceOf(AuthBadRequestException.class);
     }
 
     @Test
@@ -122,7 +118,7 @@ public class AuthServiceTest {
 
         // when, then
         assertThatThrownBy(() -> authService.login(memberLoginDto))
-                .isInstanceOf(LoginAuthorizeException.class);
+                .isInstanceOf(LoginUnAuthorizedException.class);
     }
 
     @Test
