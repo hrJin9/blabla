@@ -3,6 +3,7 @@ package com.blabla.api;
 import com.blabla.api.auth.request.MemberCreateRequest;
 import com.blabla.api.auth.request.MemberLoginRequest;
 import com.blabla.api.auth.response.AuthTokenResponse;
+import com.blabla.api.docs.DocsControllerTest;
 import com.blabla.application.auth.dto.MemberCreateDto;
 import com.blabla.application.auth.dto.MemberLoginDto;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
@@ -23,7 +24,7 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.docume
 import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 
-public class AuthControllerTest extends ControllerTest {
+public class AuthControllerTest extends DocsControllerTest {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
