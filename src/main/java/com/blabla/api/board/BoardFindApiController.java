@@ -21,10 +21,12 @@ public class BoardFindApiController {
 
     @GetMapping("/boards")
     public ResponseEntity<List<BoardFindResponse>> findAllBoards(
-            AuthInfo auth
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy
     ) {
 
-        List<BoardFindResultDto> dtoList = boardFindService.findAllBoards(auth.id());
+        List<BoardFindResultDto> dtoList = boardFindService.findAllBoards(pageNo, pageSize, sortBy);
         List<BoardFindResponse> response = dtoList.stream()
                 .map(BoardFindResponse::from)
                 .toList();
@@ -33,33 +35,24 @@ public class BoardFindApiController {
 
     @GetMapping( "/boards/{boardId}")
     public ResponseEntity<BoardFindResponse> findBoardByBoardId(
-            AuthInfo auth,
             @PathVariable Long boardId
     ) {
 
-        BoardFindResultDto dto = boardFindService.findBoardByBoardId(auth.id(), boardId);
+        BoardFindResultDto dto = boardFindService.findBoardByBoardId(boardId);
         BoardFindResponse response = BoardFindResponse.from(dto);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/categories")
-    public ResponseEntity<List<BoardCategoryFindResponse>> findBoardCategories() {
-
-        List<BoardCategoryFindResultDto> dtoList = boardFindService.findBoardCategories();
-        List<BoardCategoryFindResponse> response = dtoList.stream()
-                .map(BoardCategoryFindResponse::from)
-                .toList();
-        return ResponseEntity.ok(response);
-    }
-
     @GetMapping(value = "/categories", params = "name")
     public ResponseEntity<List<BoardFindResponse>> findBoardsByCategory(
-            AuthInfo auth,
-            @RequestParam("category") String categoryName
+            @RequestParam("category") String categoryName,
+            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy
     ) {
 
-        List<BoardFindResultDto> dtoList = boardFindService.findBoardsByCategory(auth.id(), categoryName);
+        List<BoardFindResultDto> dtoList = boardFindService.findBoardsByCategory(pageNo, pageSize, sortBy, categoryName);
         List<BoardFindResponse> response = dtoList.stream()
                 .map(BoardFindResponse::from)
                 .toList();
