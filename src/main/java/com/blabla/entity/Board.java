@@ -28,10 +28,6 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "board_visibility")
-    private BoardVisibility boardVisibility;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_id")
     private Member writer;
@@ -43,11 +39,10 @@ public class Board extends BaseEntity {
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Board(String subject, String content, Category category, BoardVisibility boardVisibility, Member writer, Tag tag) {
+    public Board(String subject, String content, Category category, Member writer, Tag tag) {
         this.subject = subject;
         this.content = content;
         this.category = category;
-        this.boardVisibility = boardVisibility;
         this.writer = writer;
         this.tag = tag;
     }

@@ -23,13 +23,13 @@ public class Category extends BaseEntity {
     @Column(name = "category_id")
     private Long id;
 
-    private String categoryName;
+    private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
     @Builder
-    public Category(String categoryName) {
-        this.categoryName = categoryName;
+    public Category(String name) {
+        this.name = name;
     }
 }
