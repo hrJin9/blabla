@@ -8,7 +8,6 @@ public class BearerParser {
     public static boolean isBearerAuthType(String authorization) {
         return haveAuthorizationHeader(authorization) &&
                 startWithBearer(authorization) &&
-                haveAuthorizationHeader(authorization) &&
                 haveAuthorizationValue(authorization);
     }
 
