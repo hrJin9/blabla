@@ -21,9 +21,9 @@ public class BoardFindApiController {
 
     @GetMapping("/boards")
     public ResponseEntity<List<BoardFindResponse>> findAllBoards(
-            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy
+            @RequestParam(value = "page-no", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "page-size", defaultValue = "5", required = false) int pageSize,
+            @RequestParam(value = "sort-by", defaultValue = "id", required = false) String sortBy
     ) {
 
         List<BoardFindResultDto> dtoList = boardFindService.findAllBoards(pageNo, pageSize, sortBy);
@@ -47,9 +47,9 @@ public class BoardFindApiController {
     @GetMapping(value = "/categories", params = "name")
     public ResponseEntity<List<BoardFindResponse>> findBoardsByCategory(
             @RequestParam("category") String categoryName,
-            @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-            @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
-            @RequestParam(value = "sortBy", defaultValue = "id", required = false) String sortBy
+            @RequestParam(value = "page-no", defaultValue = "0", required = false) int pageNo,
+            @RequestParam(value = "page-size", defaultValue = "5", required = false) int pageSize,
+            @RequestParam(value = "sort-by", defaultValue = "id", required = false) String sortBy
     ) {
 
         List<BoardFindResultDto> dtoList = boardFindService.findBoardsByCategory(pageNo, pageSize, sortBy, categoryName);
