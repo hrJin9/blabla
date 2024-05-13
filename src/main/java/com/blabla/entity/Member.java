@@ -39,6 +39,16 @@ public class Member extends BaseEntity {
         this.phone = phone;
     }
 
+    public Member(Long id, String loginId, String email, String encryptedPassword, String nickName, String phone, Boolean deleted) {
+        this.id = id;
+        this.loginId = loginId;
+        this.email = email;
+        this.encryptedPassword = encryptedPassword;
+        this.nickName = nickName;
+        this.phone = phone;
+        this.deleted = deleted;
+    }
+
     public static Member of(String loginId, String email, String password, String nickName, String phone) {
         return new Member(
                 loginId,

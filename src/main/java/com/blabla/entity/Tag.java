@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.awt.image.LookupOp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,11 @@ public class Tag extends BaseEntity {
 
     @Builder
     public Tag(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public Tag(Long id, String tagName) {
+        this.id = id;
         this.tagName = tagName;
     }
 }

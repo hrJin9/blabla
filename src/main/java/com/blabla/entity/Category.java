@@ -28,8 +28,16 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
+    private Boolean deleted = Boolean.FALSE;
+
     @Builder
     public Category(String name) {
         this.name = name;
+    }
+
+    public Category(Long id, String name, Boolean deleted) {
+        this.id = id;
+        this.name = name;
+        this.deleted = deleted;
     }
 }

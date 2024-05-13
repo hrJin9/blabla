@@ -46,4 +46,14 @@ public class Board extends BaseEntity {
         this.writer = writer;
         this.tag = tag;
     }
+
+    public Board(Long id, String subject, String content, Category category, Member writer, Tag tag, Boolean deleted) {
+        this.id = id;
+        this.subject = subject;
+        this.content = content;
+        this.category = category;
+        this.writer = writer;
+        this.tag = tag;
+        this.deleted = deleted;
+    }
 }
