@@ -1,13 +1,11 @@
 package com.blabla.entity;
 
-import com.blabla.exception.LoginAuthorizeException;
+import com.blabla.exception.LoginUnAuthorizedException;
 import com.blabla.util.PasswordEncryptor;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
-import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -53,7 +51,7 @@ public class Member extends BaseEntity {
     public void checkPassword(String password) {
         String hashedPassword = PasswordEncryptor.encrypt(password);
         if (!this.encryptedPassword.equals(hashedPassword)) {
-            throw new LoginAuthorizeException("비밀번호가 일치하지 않습니다.");
+            throw new LoginUnAuthorizedException("비밀번호가 일치하지 않습니다.");
         }
     }
 }
