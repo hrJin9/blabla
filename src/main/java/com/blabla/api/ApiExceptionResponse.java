@@ -1,8 +1,6 @@
 package com.blabla.api;
 
-import lombok.RequiredArgsConstructor;
-
-@RequiredArgsConstructor
-public class ApiExceptionResponse {
-    private final String message;
+public record ApiExceptionResponse (
+        String message
+) {
 }
