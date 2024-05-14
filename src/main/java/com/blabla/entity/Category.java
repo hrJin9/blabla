@@ -23,6 +23,9 @@ public class Category extends BaseEntity {
     @Column(name = "category_id")
     private Long id;
 
+    @Column(name = "upper_category_id")
+    private Long upperId;
+
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
@@ -35,8 +38,9 @@ public class Category extends BaseEntity {
         this.name = name;
     }
 
-    public Category(Long id, String name, Boolean deleted) {
+    public Category(Long id, Long upperId, String name, Boolean deleted) {
         this.id = id;
+        this.upperId = upperId;
         this.name = name;
         this.deleted = deleted;
     }
