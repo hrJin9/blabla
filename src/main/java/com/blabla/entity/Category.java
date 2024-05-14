@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,17 +32,58 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member")
+    private Member creator;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member")
+    private Member modifier;
+
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Category(String name) {
+    public Category(Long upperId, String name, Member creator, Member modifier) {
+        this.upperId = upperId;
         this.name = name;
+        this.creator = creator;
+        this.modifier = modifier;
     }
 
-    public Category(Long id, Long upperId, String name, Boolean deleted) {
+    public Category(Long id, Long upperId, String name, Member creator, Member modifier, Boolean deleted) {
         this.id = id;
         this.upperId = upperId;
         this.name = name;
+        this.creator = creator;
+        this.modifier = modifier;
         this.deleted = deleted;
+    }
+
+    public static Category create(Long upperId, String name, Member creator) {
+        return new Category(
+                upperId,
+                name,
+                creator,
+                creator
+        );
+    }
+
+    public int update(Long upperId, String name, Member modifier, Boolean deleted) {
+        int count = 0;
+        if (!ObjectUtils.isEmpty(upperId)) {
+            this.upperId = upperId;
+            count++;
+        }
+        if (!ObjectUtils.isEmpty(name)) {
+            this.name = name;
+            count++;
+        }
+        if (!ObjectUtils.isEmpty(deleted)) {
+            this.deleted = deleted;
+            count++;
+        }
+
+        this.modifier = modifier;
+        return count;
     }
 }
