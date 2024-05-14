@@ -13,9 +13,13 @@ import com.blabla.entity.Board;
 import com.blabla.entity.Category;
 import com.blabla.entity.Member;
 import com.blabla.helper.BearerAuthHelper;
+import com.blabla.repository.auth.BlackListRepository;
 import com.blabla.repository.auth.MemberRepository;
 import com.blabla.repository.board.BoardRepository;
-import com.blabla.repository.board.CategoryRepository;
+import com.blabla.repository.category.CategoryRepository;
+import com.blabla.util.JwtTokenProvider;
+import com.blabla.util.RefreshTokenValidator;
+import com.blabla.util.TokenGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +35,6 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -90,13 +93,25 @@ public abstract class DocsControllerTest {
     protected CategoryFindService categoryFindService;
 
     @MockBean
-    private MemberRepository memberRepository;
+    protected MemberRepository memberRepository;
 
     @MockBean
-    private BoardRepository boardRepository;
+    protected BlackListRepository blackListRepository;
 
     @MockBean
-    private CategoryRepository categoryRepository;
+    protected BoardRepository boardRepository;
+
+    @MockBean
+    protected CategoryRepository categoryRepository;
+
+    @SpyBean
+    private TokenGenerator tokenGenerator;
+
+    @SpyBean
+    private RefreshTokenValidator refreshTokenValidator;
+
+    @SpyBean
+    private JwtTokenProvider jwtTokenProvider;
 
 
     @BeforeAll
