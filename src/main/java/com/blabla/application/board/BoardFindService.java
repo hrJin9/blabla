@@ -14,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Service
 public class BoardFindService {
 
     private final BoardRepository boardRepository;
