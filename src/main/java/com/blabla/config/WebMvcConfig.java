@@ -14,7 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    private static final String[] excludePaths = {"/api/auth/login","/api/auth/register","/api/swagger-ui/**","/api/docs/**", "/api/boards/**", "/api/categories/**"};
+    private static final String[] excludePaths = {"/api/auth/login","/api/auth/register","/api/swagger-ui/**","/api/docs/**"};
+    private static final String[] apiExcludePaths = {"/api/boards/**", "/api/categories/**"};
 
     private final AuthInterceptor authInterceptor;
     private final AuthArgumentResolver authArgumentResolver;
@@ -23,7 +24,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/api/**")
-                .excludePathPatterns(excludePaths);
+                .excludePathPatterns(excludePaths)
+                .excludePathPatterns(apiExcludePaths);
     }
 
     @Override
