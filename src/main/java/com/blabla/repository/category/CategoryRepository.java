@@ -1,4 +1,4 @@
-package com.blabla.repository.board;
+package com.blabla.repository.category;
 
 import com.blabla.entity.Category;
 import org.springframework.data.jpa.repository.JpaRepository;

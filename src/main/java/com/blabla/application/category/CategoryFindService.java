@@ -1,9 +1,9 @@
 package com.blabla.application.category;
 
-import com.blabla.application.board.dto.BoardCategoryFindResultDto;
 import com.blabla.application.category.dto.CategoryFindResultDto;
 import com.blabla.entity.Category;
-import com.blabla.repository.board.CategoryRepository;
+import com.blabla.exception.CategoryNotFoundException;
+import com.blabla.repository.category.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +20,10 @@ public class CategoryFindService {
                 .map(CategoryFindResultDto::from)
                 .toList();
 
+    }
+
+    public Category findById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 카테고리입니다."));
     }
 }

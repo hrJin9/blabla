@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/categories")
+@RequestMapping("/api/categories")
 public class CategoryFindApiController {
 
     private final CategoryFindService categoryFindService;
