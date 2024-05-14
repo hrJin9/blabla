@@ -56,4 +56,14 @@ public class Board extends BaseEntity {
         this.tag = tag;
         this.deleted = deleted;
     }
+
+    public static Board create(String subject, String content, Category category, Member writer, Tag tag) {
+        return new Board(
+                subject,
+                content,
+                category,
+                writer,
+                tag
+        );
+    }
 }

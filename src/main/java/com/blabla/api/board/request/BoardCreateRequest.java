@@ -1,5 +1,9 @@
 package com.blabla.api.board.request;
 
-public record BoardCreateRequest(String subject,
-                                 String content) {
+public record BoardCreateRequest(
+        Long categoryId,
+        Long tagId,
+        String subject,
+        String content
+) {
 }

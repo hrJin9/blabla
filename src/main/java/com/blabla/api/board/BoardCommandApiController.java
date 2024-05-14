@@ -43,12 +43,12 @@ public class BoardCommandApiController {
     }
 
     @DeleteMapping("/{boardId}")
-    public ResponseEntity<?> deleteBoardById(
+    public ResponseEntity<Void> deleteBoardById(
             AuthInfo auth,
             @PathVariable Long boardId
     ) {
 
         boardCommandService.deleteBoardById(auth.id(), boardId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
