@@ -27,15 +27,21 @@ public class Tag extends BaseEntity {
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
-    private String tagName;
+    private String name;
+
+    private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Tag(String tagName) {
-        this.tagName = tagName;
+    public Tag(String name) {
+        this.name = name;
     }
 
     public Tag(Long id, String tagName) {
         this.id = id;
-        this.tagName = tagName;
+        this.name = tagName;
+    }
+
+    public static Tag create(String name) {
+        return new Tag(name);
     }
 }
