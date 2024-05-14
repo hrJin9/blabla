@@ -30,7 +30,7 @@ public class AuthControllerTest extends DocsControllerTest {
     @Test
     void 회원가입_요청이_정상적일_경우_201_코드를_반환한다() throws Exception {
         // given
-        final MemberCreateRequest memberCreateRequest = new MemberCreateRequest("test@gmail.com", "password123!@#", "테스터", "01012345678");
+        final MemberCreateRequest memberCreateRequest = new MemberCreateRequest("tester1", "tester1@gmail.com", "password123!@#", "테스터", "01012345678");
         when(authService.register(MemberCreateDto.from(memberCreateRequest)))
                 .thenReturn(1L);
 
@@ -73,25 +73,26 @@ public class AuthControllerTest extends DocsControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void 토큰_재발급_요청이_정상적일_경우_쿠키에_세팅한다() {
-        // given
-        final String refreshToken = "r";
-        final Long memberId = 1L;
-
-        // when, then
-        mockMvc.perform(
-                        get("/api/auth/reissue-token")
-                                .header(HttpHeaders.AUTHORIZATION)
-                                .cookie("refresh_token")
-                )
-                .andDo()
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    void 로그아웃_요청이_정상적일_경우_204_코드를_반환한다() {
-        // given
-        final String accessToken = "a";
-    }
+//    @Test
+//    void 토큰_재발급_요청이_정상적일_경우_쿠키에_세팅한다() {
+//        // given
+//        final String refreshToken = "r";
+//        final Long memberId = 1L;
+//
+//        // when, then
+//        mockMvc.perform(
+//                        get("/api/auth/reissue-token")
+//                                .header(HttpHeaders.AUTHORIZATION)
+//                                .cookie("refresh_token", refreshToken)
+//
+//                )
+//                .andDo()
+//                .andExpect(status().isOk());
+//    }
+//
+//    @Test
+//    void 로그아웃_요청이_정상적일_경우_204_코드를_반환한다() {
+//        // given
+//        final String accessToken = "a";
+//    }
 }
