@@ -24,24 +24,31 @@ public class Tag extends BaseEntity {
     @Column(name = "tag_id")
     private Long id;
 
-    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL)
-    private List<Board> boards = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "board_id")
+    private Board board;
 
     private String name;
+
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardTag> boardTags = new ArrayList<>();
 
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Tag(String name) {
+    public Tag(String name, Board board) {
         this.name = name;
+        this.board = board;
     }
 
-    public Tag(Long id, String tagName) {
+    public Tag(Long id, Board board, String name, Boolean deleted) {
         this.id = id;
-        this.name = tagName;
+        this.board = board;
+        this.name = name;
+        this.deleted = deleted;
     }
 
-    public static Tag create(String name) {
-        return new Tag(name);
-    }
+//    public static Tag create(String name, BoardTag boardTag) {
+//        return new Tag(name, board);
+//    }
 }

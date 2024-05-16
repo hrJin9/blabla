@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -37,9 +38,8 @@ public class Board extends BaseEntity {
     @JoinColumn(name = "writer_id")
     private Member writer;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardTag> boardTags = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Likes> likes = new ArrayList<>();
@@ -47,31 +47,19 @@ public class Board extends BaseEntity {
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Board(String subject, String content, Category category, Member writer, Tag tag) {
+    public Board(String subject, String content, Category category, Member writer) {
         this.subject = subject;
         this.content = content;
         this.category = category;
         this.writer = writer;
-        this.tag = tag;
     }
 
-    public Board(Long id, String subject, String content, Category category, Member writer, Tag tag, Boolean deleted) {
-        this.id = id;
-        this.subject = subject;
-        this.content = content;
-        this.category = category;
-        this.writer = writer;
-        this.tag = tag;
-        this.deleted = deleted;
-    }
-
-    public static Board create(String subject, String content, Category category, Member writer, Tag tag) {
+    public static Board create(String subject, String content, Category category, Member writer) {
         return new Board(
                 subject,
                 content,
                 category,
-                writer,
-                tag
+                writer
         );
     }
 
