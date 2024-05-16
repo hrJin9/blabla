@@ -31,9 +31,11 @@ public class BoardFindService {
                 .toList();
     }
 
-    public BoardFindResultDto findBoardByBoardId(Long boardId) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new BoardNotFoundException("게시글이 존재하지 않습니다."));
+    public BoardFindResultDto findBoard(Long boardId) {
+        Board board = this.findById(boardId);
+
+        board.updateReadCount();
+
         return BoardFindResultDto.from(board);
     }
 
@@ -44,5 +46,10 @@ public class BoardFindService {
         return boards.stream()
                 .map(BoardFindResultDto::from)
                 .toList();
+    }
+
+    public Board findById(Long boardId) {
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new BoardNotFoundException("게시글이 존재하지 않습니다."));
     }
 }

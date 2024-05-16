@@ -38,15 +38,15 @@ public class BoardFindApiController {
             @PathVariable Long boardId
     ) {
 
-        BoardFindResultDto dto = boardFindService.findBoardByBoardId(boardId);
+        BoardFindResultDto dto = boardFindService.findBoard(boardId);
         BoardFindResponse response = BoardFindResponse.from(dto);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/categories", params = "name")
+    @GetMapping(value = "/categories/{categoryName}")
     public ResponseEntity<List<BoardFindResponse>> findBoardsByCategory(
-            @RequestParam("category") String categoryName,
+            @PathVariable String categoryName,
             @RequestParam(value = "page-no", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value = "page-size", defaultValue = "5", required = false) int pageSize,
             @RequestParam(value = "sort-by", defaultValue = "id", required = false) String sortBy

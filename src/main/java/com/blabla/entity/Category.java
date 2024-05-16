@@ -33,11 +33,11 @@ public class Category extends BaseEntity {
     private List<Board> boards = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(referencedColumnName = "member_id", name = "creator_id")
     private Member creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(referencedColumnName = "member_id", name = "modifier_id")
     private Member modifier;
 
     private Boolean deleted = Boolean.FALSE;
