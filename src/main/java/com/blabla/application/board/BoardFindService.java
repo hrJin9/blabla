@@ -31,7 +31,7 @@ public class BoardFindService {
                 .toList();
     }
 
-    public BoardFindResultDto findBoard(Long boardId) {
+    public BoardFindResultDto findBoardAndRead(Long boardId) {
         Board board = this.findById(boardId);
 
         board.updateReadCount();
@@ -52,4 +52,5 @@ public class BoardFindService {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글이 존재하지 않습니다."));
     }
+
 }

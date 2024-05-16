@@ -38,7 +38,7 @@ public class BoardFindApiController {
             @PathVariable Long boardId
     ) {
 
-        BoardFindResultDto dto = boardFindService.findBoard(boardId);
+        BoardFindResultDto dto = boardFindService.findBoardAndRead(boardId);
         BoardFindResponse response = BoardFindResponse.from(dto);
 
         return ResponseEntity.ok(response);

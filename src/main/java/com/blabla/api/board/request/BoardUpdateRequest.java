@@ -1,5 +1,12 @@
 package com.blabla.api.board.request;
 
-public record BoardUpdateRequest(String subject,
-                                 String content) {
+import java.util.List;
+
+public record BoardUpdateRequest(
+        String subject,
+        String content,
+        Long categoryId,
+        List<String> tagNames,
+        Boolean deleted
+) {
 }
