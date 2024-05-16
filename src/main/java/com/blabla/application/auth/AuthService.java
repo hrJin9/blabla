@@ -8,7 +8,7 @@ import com.blabla.entity.Member;
 import com.blabla.exception.AuthBadRequestException;
 import com.blabla.exception.MemberNotFoundException;
 import com.blabla.repository.auth.BlackListRepository;
-import com.blabla.repository.auth.MemberRepository;
+import com.blabla.repository.member.MemberRepository;
 import com.blabla.util.TokenGenerator;
 import com.blabla.util.RefreshTokenValidator;
 import lombok.RequiredArgsConstructor;

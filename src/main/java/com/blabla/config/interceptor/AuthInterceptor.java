@@ -2,7 +2,7 @@ package com.blabla.config.interceptor;
 
 import com.blabla.exception.MemberNotFoundException;
 import com.blabla.exception.TokenNotValidException;
-import com.blabla.repository.auth.MemberRepository;
+import com.blabla.repository.member.MemberRepository;
 import com.blabla.util.BearerParser;
 import com.blabla.util.TokenGenerator;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,7 +10,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 @RequiredArgsConstructor
