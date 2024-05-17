@@ -21,12 +21,9 @@ import java.util.List;
 public class Tag extends BaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tag_id")
     private Long id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_id")
-    private Board board;
 
     private String name;
 
@@ -36,19 +33,17 @@ public class Tag extends BaseEntity {
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Tag(String name, Board board) {
+    public Tag(String name) {
         this.name = name;
-        this.board = board;
     }
 
-    public Tag(Long id, Board board, String name, Boolean deleted) {
+    public Tag(Long id, String name, Boolean deleted) {
         this.id = id;
-        this.board = board;
         this.name = name;
         this.deleted = deleted;
     }
 
-//    public static Tag create(String name, BoardTag boardTag) {
-//        return new Tag(name, board);
-//    }
+    public static Tag create(String name) {
+        return new Tag(name);
+    }
 }

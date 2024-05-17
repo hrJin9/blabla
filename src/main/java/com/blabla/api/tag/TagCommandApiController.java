@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/tags")
+@RequestMapping("/api/command/tags")
 public class TagCommandApiController {
 
     private final TagCommandService tagCommandService;

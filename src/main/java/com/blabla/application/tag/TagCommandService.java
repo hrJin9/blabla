@@ -19,7 +19,7 @@ public class TagCommandService {
                 .orElse(Tag.create(name));
 
         Tag savedTag = tagRepository.save(tag);
-        return tag.getId();
+        return savedTag.getId();
     }
 
     public void deleteTag(String name) {
