@@ -1,7 +1,10 @@
 package com.blabla.api.category.request;
 
+import jakarta.validation.constraints.NotNull;
+
 public record CategoryCreateRequest(
         Long upperId,
-        String name
+        @NotNull Long orders,
+        @NotNull String name
 ) {
 }

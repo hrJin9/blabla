@@ -27,6 +27,8 @@ public class Category extends BaseEntity {
     @Column(name = "upper_category_id")
     private Long upperId;
 
+    private Long orders;
+
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
@@ -43,37 +45,46 @@ public class Category extends BaseEntity {
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Category(Long upperId, String name, Member creator, Member modifier) {
+    public Category(Long upperId, Long orders, String name, Member creator, Member modifier) {
         this.upperId = upperId;
+        this.orders = orders;
         this.name = name;
         this.creator = creator;
         this.modifier = modifier;
     }
 
-    public Category(Long id, Long upperId, String name, Member creator, Member modifier, Boolean deleted) {
+    public Category(Long id, Long upperId, Long orders, String name, Member creator, Member modifier, Boolean deleted) {
         this.id = id;
         this.upperId = upperId;
+        this.orders = orders;
         this.name = name;
         this.creator = creator;
         this.modifier = modifier;
         this.deleted = deleted;
     }
 
-    public static Category create(Long upperId, String name, Member creator) {
+    public static Category create(Long upperId, Long orders, String name, Member creator) {
         return new Category(
                 upperId,
+                orders,
                 name,
                 creator,
                 creator
         );
     }
 
-    public int update(Long upperId, String name, Member modifier, Boolean deleted) {
+    public int update(Long upperId, Long orders, String name, Member modifier, Boolean deleted) {
         int count = 0;
         if (!ObjectUtils.isEmpty(upperId)) {
             this.upperId = upperId;
             count++;
         }
+
+        if (!ObjectUtils.isEmpty(orders)) {
+            this.orders = orders;
+            count++;
+        }
+
         if (!ObjectUtils.isEmpty(name)) {
             this.name = name;
             count++;
