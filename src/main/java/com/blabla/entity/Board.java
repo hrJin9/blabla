@@ -66,4 +66,10 @@ public class Board extends BaseEntity {
     public void updateReadCount() {
         this.readCount++;
     }
+
+    public void update(String subject, String content, Category category) {
+        this.subject = subject;
+        this.content = content;
+        this.category = category;
+    }
 }
