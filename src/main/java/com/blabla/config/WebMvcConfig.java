@@ -15,7 +15,7 @@ import java.util.List;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     private static final String[] excludePaths = {"/api/auth/login","/api/auth/register","/api/swagger-ui/**","/api/docs/**"};
-    private static final String[] apiExcludePaths = {"/api/boards/**", "/api/categories/**"};
+    private static final String[] apiExcludePaths = {"/api/boards/**", "/api/categories/**", "/api/likes/**", "/api/tags/**"};
 
     private final AuthInterceptor authInterceptor;
     private final AuthArgumentResolver authArgumentResolver;
