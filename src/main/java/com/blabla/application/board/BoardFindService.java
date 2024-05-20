@@ -24,7 +24,7 @@ public class BoardFindService {
     // TODO: 인덱스 활용하기
     public List<BoardFindResultDto> findAllBoards(int pageNo, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-        Page<Board> boards  = boardRepository.findAll(pageable);
+        Page<Board> boards  = boardRepository.findAllBoards(pageable);
 
         return boards.stream()
                 .map(BoardFindResultDto::from)

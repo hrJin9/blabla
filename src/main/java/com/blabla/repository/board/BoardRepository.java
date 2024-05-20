@@ -13,18 +13,17 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-//    @Query(value = "SELECT b FROM Board b WHERE b.boardVisibility = 'PUBLIC'")
-//    List<Board> findPublicBoards();
+    // TODO: 왜 limit이 안걸리는거지?
+    @Query(value = "SELECT b FROM Board b " +
+            "left join fetch b.category " +
+            "left join fetch b.likes",
+            countQuery = "select count(b.id) from Board b")
+    Page<Board> findAllBoards(Pageable pageable);
 
-//    @Query(value = "SELECT b FROM Board b WHERE (b.board_visibility = 'PRIVATE' AND b.writer_id = :memberId) OR b.board_visibility = 'PUBLIC'", nativeQuery = true)
-//    List<Board> findBoards();
-
-//    @Query(value = "SELECT b FROM Board b WHERE b.id = :boardId AND b.boardVisibility = 'PUBLIC'")
-//    Optional<Board> findPublicBoardById(Long boardId);
-
-//    @Query(value = "SELECT b FROM Board b WHERE b.board_id = :boardId AND ((b.board_visibility = 'PRIVATE' AND b.writer_id = :memberId) OR b.board_visibility = 'PUBLIC')", nativeQuery = true)
-//    Optional<Board> findBoardById(Long boardId);
-
-    @Query(value = "SELECT b FROM Board b LEFT JOIN Category c ON b.category.id = c.id  WHERE c.name = :categoryName")
+    @Query(value = "SELECT b " +
+            "FROM Board b " +
+            "join b.category " +
+            "WHERE b.category.name = :categoryName")
     Page<Board> findBoardsByCategoryName(Pageable pageable, String categoryName);
+
 }
