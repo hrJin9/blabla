@@ -32,6 +32,4 @@ public class BoardTag {
     public static BoardTag create(BoardTagId boardTagId) {
         return new BoardTag(boardTagId);
     }
-
-
 }

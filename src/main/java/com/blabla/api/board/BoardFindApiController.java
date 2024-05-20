@@ -1,11 +1,8 @@
 package com.blabla.api.board;
 
-import com.blabla.api.board.response.BoardCategoryFindResponse;
 import com.blabla.api.board.response.BoardFindResponse;
 import com.blabla.application.board.BoardFindService;
-import com.blabla.application.board.dto.BoardCategoryFindResultDto;
 import com.blabla.application.board.dto.BoardFindResultDto;
-import com.blabla.config.resolver.AuthInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
