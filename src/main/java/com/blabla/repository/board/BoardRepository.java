@@ -16,7 +16,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     // TODO: 왜 limit이 안걸리는거지?
     @Query(value = "SELECT b FROM Board b " +
             "left join fetch b.category " +
-            "left join fetch b.likes",
+            "left join b.likes",
             countQuery = "select count(b.id) from Board b")
     Page<Board> findAllBoards(Pageable pageable);
 
