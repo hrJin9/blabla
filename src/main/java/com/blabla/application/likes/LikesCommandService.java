@@ -19,6 +19,7 @@ public class LikesCommandService {
     private final BoardFindService boardFindService;
 
     public Long createLikes(Long memberId, Long boardId) {
+
         Board board = boardFindService.findById(boardId);
         Member member = memberFindService.findById(memberId);
 

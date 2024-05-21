@@ -15,6 +15,7 @@ public class MemberFindService {
     private final MemberRepository memberRepository;
 
     public Member findById(Long id) {
+
         return memberRepository.findById(id)
                 .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 계정입니다."));
     }
