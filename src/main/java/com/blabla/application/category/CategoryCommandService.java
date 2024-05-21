@@ -54,6 +54,8 @@ public class CategoryCommandService {
     }
 
     public void deleteCategory(Long memberId, Long categoryId) {
+        
+        // TODO: 엔티티 삭제 시 수정자도 업데이트 하는 방법
         Member modifier = memberFindService.findById(memberId);
         Category deletedCategory = categoryFindService.findById(categoryId);
 
@@ -61,6 +63,7 @@ public class CategoryCommandService {
     }
 
     private void isDuplicatedOrder(Long upperId, Long orders) {
+
         if (categoryRepository.findByUpperIdAndOrders(upperId, orders).isPresent()) {
             throw new CategoryCommandBadRequestException("카테고리 순서가 중복되었습니다.");
         }

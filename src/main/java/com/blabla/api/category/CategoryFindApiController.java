@@ -17,7 +17,8 @@ import java.util.List;
 public class CategoryFindApiController {
 
     private final CategoryFindService categoryFindService;
-
+    
+    // TODO : 캐싱하기
     @GetMapping
     public ResponseEntity<List<CategoryFindResponse>> findBoardCategories() {
 
