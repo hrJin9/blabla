@@ -5,7 +5,9 @@ import com.blabla.exception.TagNotFoundException;
 import com.blabla.repository.tag.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -14,11 +16,22 @@ public class TagCommandService {
 
     private final TagRepository tagRepository;
 
-    public Long findOrCreateTag(String name) {
-        Tag tag = tagRepository.findByName(name)
-                .orElse(Tag.create(name));
+    @Transactional
+    public List<Long> findOrCreateTags(List<String> tagNames) {
+        List<Tag> tags = tagNames.stream()
+                .map(tagName -> tagRepository.findByName(tagName)
+                        .orElse(Tag.create(tagName)))
+                .toList();
 
-        Tag savedTag = tagRepository.save(tag);
+        return tagRepository.saveAll(tags).stream()
+                .map(Tag::getId)
+                .toList();
+    }
+
+    public Long findOrCreateTag(String tagName) {
+        Tag savedTag = tagRepository.findByName(tagName)
+                .orElse(Tag.create(tagName));
+        tagRepository.save(savedTag);
         return savedTag.getId();
     }
 
@@ -28,4 +41,5 @@ public class TagCommandService {
 
         tagRepository.delete(tag);
     }
+
 }
