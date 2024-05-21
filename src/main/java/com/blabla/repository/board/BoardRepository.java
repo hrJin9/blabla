@@ -13,17 +13,20 @@ import java.util.Optional;
 
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    // TODO: 왜 limit이 안걸리는거지?
     @Query(value = "SELECT b FROM Board b " +
             "left join fetch b.category " +
-            "left join b.likes",
-            countQuery = "select count(b.id) from Board b")
+            "left join b.likes " +
+            "left join b.boardTags bt"
+            , countQuery = "select count(b.id) from Board b")
     Page<Board> findAllBoards(Pageable pageable);
 
     @Query(value = "SELECT b " +
             "FROM Board b " +
-            "join b.category " +
-            "WHERE b.category.name = :categoryName")
+            "join fetch b.category " +
+            "left join b.likes " +
+            "left join b.boardTags bt " +
+            "WHERE b.category.name = :categoryName"
+            , countQuery = "select count(b.id) from Board b where b.category.name = :categoryName")
     Page<Board> findBoardsByCategoryName(Pageable pageable, String categoryName);
 
 }

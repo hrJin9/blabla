@@ -20,13 +20,13 @@ import java.util.List;
 @Service
 public class BoardCommandService {
 
-    private final BoardRepository boardRepository;
     private final BoardFindService boardFindService;
     private final MemberFindService memberFindService;
     private final CategoryFindService categoryFindService;
     private final TagCommandService tagCommandService;
-    private final TagRepository tagRepository;
-    private final BoardTagRepository boardTagRepository;
+    private final BoardTagCommandService boardTagCommandService;
+
+    private final BoardRepository boardRepository;
 
     @Transactional
     public Long createBoard(Long memberId, BoardCreateDto boardCreateDto) {
@@ -45,18 +45,10 @@ public class BoardCommandService {
         boardRepository.save(savedBoard);
 
         // Tag를 찾거나 생성한다.
-        List<Tag> tags = boardCreateDto.tagNames().stream()
-                .map(tagCommandService::findOrCreateTag)
-                .map(tagRepository::getReferenceById)
-                .toList();
+        List<Long> tagIds = tagCommandService.findOrCreateTags(boardCreateDto.tagNames());
 
         // Board와 Tag의 연관관계를 저장한다.
-        List<BoardTag> boardTags = tags.stream()
-                .map((tag) -> BoardTagId.create(savedBoard.getId(), tag.getId()))
-                .map(BoardTag::create)
-                .toList();
-
-        boardTagRepository.saveAll(boardTags);
+        boardTagCommandService.createBoardTags(savedBoard.getId(), tagIds);
 
         return savedBoard.getId();
     }
@@ -75,16 +67,11 @@ public class BoardCommandService {
                 category
         );
 
-        // 가지고 있는 태그와 비교해서, 공통적으로 가지고있으면 아무것도 X -> 없어졌으면 delete -> 있으면 insert
-        List<BoardTag> boardTags = boardTagRepository.findAllByBoardId(boardId);
+        // Tag를 찾거나 생성한다.
+        List<Long> tagIds = tagCommandService.findOrCreateTags(boardUpdateDto.tagNames());
 
-        // 추가
-
-
-
-        // 제거
-
-
+        // Board와 Tag의 연관관계를 재저장한다.
+        boardTagCommandService.recreateBoardTags(board.getId(), tagIds);
     }
 
     public void deleteBoardById(Long memberId, Long boardId) {

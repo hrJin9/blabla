@@ -34,6 +34,7 @@ public class BoardFindService {
     public BoardFindResultDto findBoardAndRead(Long boardId) {
         Board board = this.findById(boardId);
 
+        // 조회수를 증가시킨다.
         board.updateReadCount();
 
         return BoardFindResultDto.from(board);

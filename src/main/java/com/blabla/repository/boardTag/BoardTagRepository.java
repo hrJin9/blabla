@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface BoardTagRepository extends JpaRepository<BoardTag, Long> {
 
+    @Query("select bt from BoardTag  bt " +
+            "where bt.board.id = :boardId")
     List<BoardTag> findAllByBoardId(Long boardId);
 
-//    @Query("SELECT bt FROM BoardTag bt WHERE bt.id = :boardId ")
-//    List<BoardTag> findAllBoardTagsByBoardId(Long boardId);
 }
