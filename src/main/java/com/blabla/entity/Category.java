@@ -31,6 +31,8 @@ public class Category extends BaseEntity {
 
     private String name;
 
+    private String engName;
+
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Board> boards = new ArrayList<>();
 
@@ -45,35 +47,38 @@ public class Category extends BaseEntity {
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Category(Long upperId, Long orders, String name, Member creator, Member modifier) {
+    public Category(Long upperId, Long orders, String name, String engName, Member creator, Member modifier) {
         this.upperId = upperId;
         this.orders = orders;
         this.name = name;
+        this.engName = engName;
         this.creator = creator;
         this.modifier = modifier;
     }
 
-    public Category(Long id, Long upperId, Long orders, String name, Member creator, Member modifier, Boolean deleted) {
+    public Category(Long id, Long upperId, Long orders, String name, String engName, Member creator, Member modifier, Boolean deleted) {
         this.id = id;
         this.upperId = upperId;
         this.orders = orders;
         this.name = name;
+        this.engName = engName;
         this.creator = creator;
         this.modifier = modifier;
         this.deleted = deleted;
     }
 
-    public static Category create(Long upperId, Long orders, String name, Member creator) {
+    public static Category create(Long upperId, Long orders, String name, String engName, Member creator) {
         return new Category(
                 upperId,
                 orders,
                 name,
+                engName,
                 creator,
                 creator
         );
     }
 
-    public int update(Long upperId, Long orders, String name, Member modifier, Boolean deleted) {
+    public int update(Long upperId, Long orders, String name, String engName, Member modifier, Boolean deleted) {
         int count = 0;
         if (!ObjectUtils.isEmpty(upperId)) {
             this.upperId = upperId;
@@ -89,6 +94,12 @@ public class Category extends BaseEntity {
             this.name = name;
             count++;
         }
+
+        if (!ObjectUtils.isEmpty(engName)) {
+            this.engName = engName;
+            count++;
+        }
+
         if (!ObjectUtils.isEmpty(deleted)) {
             this.deleted = deleted;
             count++;

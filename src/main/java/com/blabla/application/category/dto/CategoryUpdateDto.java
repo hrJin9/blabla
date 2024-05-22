@@ -6,6 +6,7 @@ public record CategoryUpdateDto(
         Long upperId,
         Long orders,
         String name,
+        String engName,
         Boolean deleted
 ) {
 
@@ -14,6 +15,7 @@ public record CategoryUpdateDto(
                 request.upperId(),
                 request.orders(),
                 request.name(),
+                request.engName(),
                 request.deleted()
         );
     }

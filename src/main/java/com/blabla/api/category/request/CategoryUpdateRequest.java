@@ -1,11 +1,13 @@
 package com.blabla.api.category.request;
 
-import jakarta.annotation.Nonnull;
+
+import jakarta.validation.constraints.NotNull;
 
 public record CategoryUpdateRequest(
         Long upperId,
-        @Nonnull Long orders,
-        @Nonnull String name,
+        @NotNull Long orders,
+        @NotNull String name,
+        @NotNull String engName,
         Boolean deleted
 ) {
 }

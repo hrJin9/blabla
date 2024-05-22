@@ -29,6 +29,7 @@ public class CategoryCommandService {
                 categoryCreateDto.upperId(),
                 categoryCreateDto.orders(),
                 categoryCreateDto.name(),
+                categoryCreateDto.engName(),
                 creator
         );
 
@@ -47,6 +48,7 @@ public class CategoryCommandService {
                 categoryUpdateDto.upperId(),
                 categoryUpdateDto.orders(),
                 categoryUpdateDto.name(),
+                categoryUpdateDto.engName(),
                 modifier,
                 categoryUpdateDto.deleted()
         );
