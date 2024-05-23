@@ -28,6 +28,8 @@ public class Board extends BaseEntity {
 
     private String content;
 
+    private String tags;
+
     @ColumnDefault("0")
     private Long readCount;
 
@@ -40,25 +42,23 @@ public class Board extends BaseEntity {
     private Member writer;
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<BoardTag> boardTags = new ArrayList<>();
-
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
 
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
-    public Board(String subject, String content, Category category, Member writer) {
+    public Board(String subject, String content, String tags, Category category, Member writer) {
         this.subject = subject;
         this.content = content;
         this.category = category;
         this.writer = writer;
     }
 
-    public static Board create(String subject, String content, Category category, Member writer) {
+    public static Board create(String subject, String content, String tags,Category category, Member writer) {
         return new Board(
                 subject,
                 content,
+                tags,
                 category,
                 writer
         );
@@ -68,9 +68,10 @@ public class Board extends BaseEntity {
         this.readCount++;
     }
 
-    public void update(String subject, String content, Category category) {
+    public void update(String subject, String content, String tags, Category category) {
         this.subject = subject;
         this.content = content;
+        this.tags = tags;
         this.category = category;
     }
 }

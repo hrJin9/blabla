@@ -17,8 +17,6 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query(value = "SELECT b FROM Board b " +
             "left join fetch b.category " +
-            "left join fetch b.boardTags bt " +
-            "left join fetch bt.tag " +
             "WHERE b.id = :boardId")
     Optional<Board> findByBoardId(Long boardId);
 

@@ -7,7 +7,7 @@ import java.util.List;
 public record BoardsFindResultDto(
     List<BoardFindResultDto> boards
 ) {
-    public static BoardsFindResultDto of(List<BoardFindResultDto> boards) {
+    public static BoardsFindResultDto from(List<BoardFindResultDto> boards) {
         return new BoardsFindResultDto(boards);
     }
 }

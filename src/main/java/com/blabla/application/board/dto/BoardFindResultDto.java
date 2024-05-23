@@ -1,8 +1,9 @@
 package com.blabla.application.board.dto;
 
 import com.blabla.entity.Board;
-import com.blabla.entity.Tag;
+import org.springframework.util.ObjectUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public record BoardFindResultDto(
@@ -14,13 +15,12 @@ public record BoardFindResultDto(
         Integer likesCount
 ) {
     
-    // TODO: 쿼리 개선 해야됨
-    public static BoardFindResultDto of(Board board, List<String> tagNames) {
+    public static BoardFindResultDto from(Board board) {
         return new BoardFindResultDto(
                 board.getSubject(),
                 board.getContent(),
                 board.getCategory().getName(),
-                tagNames,
+                (ObjectUtils.isEmpty(board.getTags())) ? Collections.emptyList() : List.of(board.getTags().split(",")),
                 board.getReadCount(),
                 board.getLikes().size()
         );
