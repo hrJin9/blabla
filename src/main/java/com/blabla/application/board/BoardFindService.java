@@ -25,7 +25,6 @@ public class BoardFindService {
 
     private final BoardRepository boardRepository;
     private final BoardTagRepository boardTagRepository;
-    private final TagRepository tagRepository;
 
     // TODO: 인덱스 활용하기
     @Transactional(readOnly = true)
