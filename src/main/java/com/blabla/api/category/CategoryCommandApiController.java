@@ -32,10 +32,10 @@ public class CategoryCommandApiController {
     public ResponseEntity<Void> updateCategory(
             AuthInfo auth,
             @PathVariable Long categoryId,
-            @RequestBody @Valid CategoryUpdateRequest request
+            @RequestBody CategoryUpdateRequest request
     ) {
 
-        int updatedCount = categoryCommandService.updateCategory(auth.id(), categoryId, CategoryUpdateDto.from(request));
+        categoryCommandService.updateCategory(auth.id(), categoryId, CategoryUpdateDto.from(request));
         return ResponseEntity.noContent().build();
     }
 

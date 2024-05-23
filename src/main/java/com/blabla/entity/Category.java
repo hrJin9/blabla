@@ -78,34 +78,27 @@ public class Category extends BaseEntity {
         );
     }
 
-    public int update(Long upperId, Long orders, String name, String engName, Member modifier, Boolean deleted) {
-        int count = 0;
+    public void update(Long upperId, Long orders, String name, String engName, Member modifier, Boolean deleted) {
         if (!ObjectUtils.isEmpty(upperId)) {
             this.upperId = upperId;
-            count++;
         }
 
         if (!ObjectUtils.isEmpty(orders)) {
             this.orders = orders;
-            count++;
         }
 
         if (!ObjectUtils.isEmpty(name)) {
             this.name = name;
-            count++;
         }
 
         if (!ObjectUtils.isEmpty(engName)) {
             this.engName = engName;
-            count++;
         }
 
         if (!ObjectUtils.isEmpty(deleted)) {
             this.deleted = deleted;
-            count++;
         }
 
         this.modifier = modifier;
-        return count;
     }
 }
