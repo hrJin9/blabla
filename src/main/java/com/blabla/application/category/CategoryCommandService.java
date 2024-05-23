@@ -2,14 +2,14 @@ package com.blabla.application.category;
 
 import com.blabla.application.category.dto.CategoryCreateDto;
 import com.blabla.application.category.dto.CategoryUpdateDto;
-import com.blabla.application.member.MemberFindService;
 import com.blabla.entity.Category;
 import com.blabla.entity.Member;
-import com.blabla.exception.CategoryCommandBadRequestException;
 import com.blabla.repository.category.CategoryRepository;
+import com.blabla.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -17,13 +17,14 @@ public class CategoryCommandService {
 
     private final CategoryRepository categoryRepository;
     private final CategoryFindService categoryFindService;
-    private final MemberFindService memberFindService;
+    private final MemberRepository memberRepository;
 
     public void createCategory(Long memberId, CategoryCreateDto categoryCreateDto) {
-        Member creator = memberFindService.findById(memberId);
+
+        Member creator = memberRepository.getReferenceById(memberId);
 
         // 중복된 order인지 검사
-        isDuplicatedOrder(categoryCreateDto.upperId(), categoryCreateDto.orders());
+        categoryFindService.isDuplicatedOrder(categoryCreateDto.upperId(), categoryCreateDto.orders());
 
         Category savedCategory = Category.create(
                 categoryCreateDto.upperId(),
@@ -37,14 +38,19 @@ public class CategoryCommandService {
     }
 
     @Transactional
-    public int updateCategory(Long memberId, Long categoryId, CategoryUpdateDto categoryUpdateDto) {
-        Member modifier = memberFindService.findById(memberId);
-        Category category = categoryFindService.findById(categoryId);
-        
-        // 중복된 order인지 검사
-        isDuplicatedOrder(categoryUpdateDto.upperId(), categoryUpdateDto.orders());
+    public void updateCategory(Long memberId, Long categoryId, CategoryUpdateDto categoryUpdateDto) {
 
-        return category.update(
+        Member modifier = memberRepository.getReferenceById(memberId);
+        Category category = categoryFindService.findById(categoryId);
+
+        if (!ObjectUtils.isEmpty(categoryUpdateDto.orders()) && !category.getOrders().equals(categoryUpdateDto.orders())) {
+
+            // 중복된 order인지 검사
+            Long upperId = (ObjectUtils.isEmpty(categoryUpdateDto.upperId())) ? category.getUpperId() :  categoryUpdateDto.upperId();
+            categoryFindService.isDuplicatedOrder(upperId, categoryUpdateDto.orders());
+        }
+
+        category.update(
                 categoryUpdateDto.upperId(),
                 categoryUpdateDto.orders(),
                 categoryUpdateDto.name(),
@@ -52,22 +58,15 @@ public class CategoryCommandService {
                 modifier,
                 categoryUpdateDto.deleted()
         );
-
     }
 
     public void deleteCategory(Long memberId, Long categoryId) {
         
         // TODO: 엔티티 삭제 시 수정자도 업데이트 하는 방법
-        Member modifier = memberFindService.findById(memberId);
+        Member modifier = memberRepository.getReferenceById(memberId);
         Category deletedCategory = categoryFindService.findById(categoryId);
 
         categoryRepository.delete(deletedCategory);
     }
 
-    private void isDuplicatedOrder(Long upperId, Long orders) {
-
-        if (categoryRepository.findByUpperIdAndOrders(upperId, orders).isPresent()) {
-            throw new CategoryCommandBadRequestException("카테고리 순서가 중복되었습니다.");
-        }
-    }
 }
