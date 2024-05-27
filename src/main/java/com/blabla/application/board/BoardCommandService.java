@@ -57,6 +57,7 @@ public class BoardCommandService {
 
     }
 
+    @Transactional
     public void deleteBoardById(Long memberId, Long boardId) {
         Board board = boardFindService.findById(boardId);
         if (!board.getWriter().getId().equals(memberId)) {

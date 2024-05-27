@@ -13,6 +13,7 @@ import com.blabla.util.TokenGenerator;
 import com.blabla.util.RefreshTokenValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class AuthService {
     private final TokenGenerator tokenGenerator;
     private final RefreshTokenValidator refreshTokenValidator;
 
+    @Transactional
     public Long register(MemberCreateDto dto) {
         if (memberRepository.findByEmail(dto.email()).isPresent()) {
             throw new AuthBadRequestException("이미 존재하는 이메일입니다.");
@@ -38,6 +40,7 @@ public class AuthService {
         return savedMember.getId();
     }
 
+    @Transactional
     public AuthTokenResponse login(MemberLoginDto dto) {
         Member member = memberRepository.findByEmail(dto.email())
                 .orElseThrow(() -> new MemberNotFoundException("존재하지 않는 이메일입니다."));
@@ -45,11 +48,13 @@ public class AuthService {
         return tokenGenerator.generate(member.getId());
     }
 
+    @Transactional
     public AuthTokenResponse reissueToken(String refreshToken, Long id) {
         refreshTokenValidator.validateToken(refreshToken, id);
         return tokenGenerator.generate(id);
     }
 
+    @Transactional
     public String logout(String refreshToken, Long id) {
         refreshTokenValidator.validateToken(refreshToken, id);
         BlackList blackList = blackListRepository.save(new BlackList(refreshToken));
