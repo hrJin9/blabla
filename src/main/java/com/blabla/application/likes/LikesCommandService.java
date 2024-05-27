@@ -7,8 +7,10 @@ import com.blabla.entity.Likes;
 import com.blabla.entity.Member;
 import com.blabla.exception.LikesNotFoundException;
 import com.blabla.repository.likes.LikesRepository;
+import com.blabla.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -16,21 +18,30 @@ public class LikesCommandService {
 
     private final LikesRepository likesRepository;
     private final MemberFindService memberFindService;
+    private final MemberRepository memberRepository;
     private final BoardFindService boardFindService;
 
-    public Long createLikes(Long memberId, Long boardId) {
+    @Transactional
+    public void createLikes(Long memberId, Long boardId) {
 
         Board board = boardFindService.findById(boardId);
-        Member member = memberFindService.findById(memberId);
+        Member member = memberRepository.getReferenceById(memberId);
 
-        Likes savedLikes = Likes.create(
-                board,
-                member
-        );
+        likesRepository.findByBoardIdAndLikerId(boardId, memberId)
+                .ifPresentOrElse(
+                        likes -> likes.changeStatus(),
+                        () -> {
+                            Likes savedLikes = Likes.create(
+                                    board,
+                                    member
+                            );
 
-        return savedLikes.getId();
+                            likesRepository.save(savedLikes);
+                        }
+                );
     }
 
+    @Transactional
     public void deleteLikes(Long memberId, Long boardId) {
 
         Likes likes = likesRepository.findByBoardIdAndLikerId(boardId, memberId)
@@ -38,4 +49,6 @@ public class LikesCommandService {
 
         likesRepository.delete(likes);
     }
+
+
 }
