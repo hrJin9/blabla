@@ -55,6 +55,18 @@ public class BoardFindService {
     }
 
     @Transactional(readOnly = true)
+    public List<BoardFindResultDto> findLikedBoardByMember(Long memberId, int pageNo, int pageSize, String sortBy) {
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
+
+        Page<Board> likedBoards = boardRepository.findLikedBoardsByMemberId(memberId, pageable);
+
+        return likedBoards.stream()
+                .map(BoardFindResultDto::from)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public Board findById(Long boardId) {
 
         return boardRepository.findById(boardId)

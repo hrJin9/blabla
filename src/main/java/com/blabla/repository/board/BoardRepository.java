@@ -27,4 +27,10 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
             , countQuery = "select count(b.id) from Board b where b.category.engName = :engName")
     Page<Board> findBoardsByCategoryName(Pageable pageable, String engName);
 
+    @Query("SELECT b FROM Board b " +
+            "LEFT JOIN FETCH b.category " +
+            "JOIN FETCH b.likes l " +
+            "WHERE l.liker.id = :memberId")
+    Page<Board> findLikedBoardsByMemberId(Long memberId, Pageable pageable);
+
 }
