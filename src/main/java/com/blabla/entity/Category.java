@@ -101,4 +101,9 @@ public class Category extends BaseEntity {
 
         this.modifier = modifier;
     }
+
+    public void delete(Member modifier) {
+        this.modifier = modifier;
+        this.deleted = Boolean.TRUE;
+    }
 }

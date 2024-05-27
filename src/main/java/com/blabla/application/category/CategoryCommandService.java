@@ -19,6 +19,7 @@ public class CategoryCommandService {
     private final CategoryFindService categoryFindService;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public void createCategory(Long memberId, CategoryCreateDto categoryCreateDto) {
 
         Member creator = memberRepository.getReferenceById(memberId);
@@ -60,13 +61,13 @@ public class CategoryCommandService {
         );
     }
 
+    @Transactional
     public void deleteCategory(Long memberId, Long categoryId) {
         
-        // TODO: 엔티티 삭제 시 수정자도 업데이트 하는 방법
         Member modifier = memberRepository.getReferenceById(memberId);
         Category deletedCategory = categoryFindService.findById(categoryId);
 
-        categoryRepository.delete(deletedCategory);
+        deletedCategory.delete(modifier);
     }
 
 }
