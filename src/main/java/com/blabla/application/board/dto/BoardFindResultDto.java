@@ -22,7 +22,7 @@ public record BoardFindResultDto(
                 board.getCategory().getName(),
                 (ObjectUtils.isEmpty(board.getTags())) ? Collections.emptyList() : List.of(board.getTags().split(",")),
                 board.getReadCount(),
-                board.getLikes().size()
+                (ObjectUtils.isEmpty(board.getLikes())) ? 0 : board.getLikes().size()
         );
     }
 }

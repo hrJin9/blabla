@@ -30,7 +30,7 @@ public class BoardCommandService {
         Board savedBoard = Board.create(
                 boardCreateDto.subject(),
                 boardCreateDto.content(),
-                String.join(",", boardCreateDto.tagNames()),
+                (boardCreateDto.tagNames().isEmpty()) ? null : String.join(",", boardCreateDto.tagNames()),
                 category,
                 member
         );
