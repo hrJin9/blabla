@@ -11,7 +11,7 @@ import org.hibernate.annotations.Where;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE likes SET deleted = true WHERE category_id = ?")
+@SQLDelete(sql = "UPDATE likes SET deleted = true WHERE likes_id = ?")
 @Where(clause = "deleted = false")
 public class Likes extends BaseEntity {
 
@@ -47,5 +47,9 @@ public class Likes extends BaseEntity {
                 board,
                 member
         );
+    }
+
+    public void changeStatus() {
+        this.deleted = !this.deleted;
     }
 }
