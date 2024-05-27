@@ -3,11 +3,16 @@ package com.blabla.api.docs;
 import com.blabla.api.auth.AuthApiController;
 import com.blabla.api.board.BoardCommandApiController;
 import com.blabla.api.board.BoardFindApiController;
+import com.blabla.api.category.CategoryCommandApiController;
 import com.blabla.api.category.CategoryFindApiController;
+import com.blabla.api.likes.LikesCommandApiController;
+import com.blabla.api.likes.LikesFindApiController;
 import com.blabla.application.auth.AuthService;
 import com.blabla.application.board.BoardCommandService;
 import com.blabla.application.board.BoardFindService;
+import com.blabla.application.category.CategoryCommandService;
 import com.blabla.application.category.CategoryFindService;
+import com.blabla.application.likes.LikesCommandService;
 import com.blabla.config.WebMvcConfig;
 import com.blabla.entity.Board;
 import com.blabla.entity.Category;
@@ -16,6 +21,7 @@ import com.blabla.helper.BearerAuthHelper;
 import com.blabla.repository.auth.BlackListRepository;
 import com.blabla.repository.board.BoardRepository;
 import com.blabla.repository.category.CategoryRepository;
+import com.blabla.repository.likes.LikesRepository;
 import com.blabla.repository.member.MemberRepository;
 import com.blabla.util.JwtTokenProvider;
 import com.blabla.util.RefreshTokenValidator;
@@ -56,7 +62,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
         AuthApiController.class,
         BoardFindApiController.class,
         BoardCommandApiController.class,
-        CategoryFindApiController.class
+        CategoryFindApiController.class,
+        CategoryCommandApiController.class,
+        LikesFindApiController.class,
+        LikesCommandApiController.class
 },
         excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebMvcConfig.class))
 @ExtendWith(RestDocumentationExtension.class)
@@ -68,7 +77,6 @@ public abstract class DocsControllerTest {
     protected static final Category CATEGORY = CATEGORY1;
     protected static final int PAGE_NO = 0;
     protected static final int PAGE_SIZE = 5;
-    protected static final Page<Board> BOARD_PAGE = new PageImpl<>(List.of(BOARD1_CAT1_MEM1, BOARD4_CAT2_MEM1_1, BOARD5_CAT2_MEM1_2), PageRequest.of(PAGE_NO,PAGE_SIZE), 3);
 
     protected static String MEMBER_BEARER_HEADER;
 
@@ -93,6 +101,12 @@ public abstract class DocsControllerTest {
     protected CategoryFindService categoryFindService;
 
     @MockBean
+    protected CategoryCommandService categoryCommandService;
+
+    @MockBean
+    protected LikesCommandService likesCommandService;
+
+    @MockBean
     protected MemberRepository memberRepository;
 
     @MockBean
@@ -104,14 +118,17 @@ public abstract class DocsControllerTest {
     @MockBean
     protected CategoryRepository categoryRepository;
 
-    @SpyBean
-    private TokenGenerator tokenGenerator;
+    @MockBean
+    protected LikesRepository likesRepository;
 
     @SpyBean
-    private RefreshTokenValidator refreshTokenValidator;
+    protected TokenGenerator tokenGenerator;
 
     @SpyBean
-    private JwtTokenProvider jwtTokenProvider;
+    protected RefreshTokenValidator refreshTokenValidator;
+
+    @SpyBean
+    protected JwtTokenProvider jwtTokenProvider;
 
 
     @BeforeAll
