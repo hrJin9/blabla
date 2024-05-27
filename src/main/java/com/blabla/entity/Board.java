@@ -54,7 +54,19 @@ public class Board extends BaseEntity {
         this.writer = writer;
     }
 
-    public static Board create(String subject, String content, String tags,Category category, Member writer) {
+    public Board(Long id, String subject, String content, String tags, Long readCount, Category category, Member writer, List<Likes> likes, Boolean deleted) {
+        this.id = id;
+        this.subject = subject;
+        this.content = content;
+        this.tags = tags;
+        this.readCount = readCount;
+        this.category = category;
+        this.writer = writer;
+        this.likes = likes;
+        this.deleted = deleted;
+    }
+
+    public static Board create(String subject, String content, String tags, Category category, Member writer) {
         return new Board(
                 subject,
                 content,
