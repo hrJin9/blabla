@@ -14,8 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    private static final String[] excludePaths = {"/api/auth/login","/api/auth/register","/api/swagger-ui/**","/api/docs/**"};
-    private static final String[] apiExcludePaths = {"/api/boards/**", "/api/categories/**", "/api/likes/**", "/api/tags/**"};
+    private static final String[] excludePaths = {"/swagger-ui/**","/api/docs/**", "/docs/**", "/v3/api-docs/", "/docs/open-api-3.0.1.json"};
+    private static final String[] apiExcludePaths = {"/api/auth/login", "/api/auth/register", "/api/boards/**", "/api/categories/**", "/api/likes/**", "/api/tags/**"};
 
     private final AuthInterceptor authInterceptor;
     private final AuthArgumentResolver authArgumentResolver;
@@ -33,8 +33,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/");
 
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/static/swagger-ui");
+        registry.addResourceHandler("/swagger-ui/**")
+                .addResourceLocations("classpath:/resources/static/docs/");
     }
 
     @Override

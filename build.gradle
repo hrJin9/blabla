@@ -9,6 +9,7 @@ plugins {
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.4'
 
+	id "org.asciidoctor.jvm.convert" version "3.3.2"
 	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
 	id 'org.hidetake.swagger.generator' version '2.18.2'
 }
@@ -24,6 +25,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	asciidoctorExt
 }
 
 repositories {
@@ -43,7 +45,10 @@ dependencies {
 
 	// Swagger + REST Docs
 	testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
+	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
 	swaggerUI 'org.webjars:swagger-ui:4.11.1'
 
 	// jwt
@@ -52,6 +57,7 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 }
 
+// 생성된 API 스펙이 어느 위치에 있는지 지정
 swaggerSources {
 	sample {
 		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
@@ -63,23 +69,16 @@ openapi3 {
 	title = "블라블라 API Docs"
 	description = "블라블라 API 명세서"
 	version = "0.0.1"
-	format = "yaml"
-//	outputDirectory = 'build/resources/main/static/docs'
+	format = "json"
+	outputFileNamePrefix = "open-api-3.0.1"
+	outputDirectory = 'build/resources/main/static/docs' // 이 디렉토리에 open-api-3.0.1.json 생성 -> jar 파일만 배포
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
-
-
-task createOutputDirectory {
-	doFirst {
-		file(openapi3.outputDirectory).mkdirs()
-	}
-}
-
-tasks.withType(GenerateSwaggerUI) {
+// openapi3가 먼저 실행 - doFirst를 통해 header 설정
+tasks.withType(GenerateSwaggerUI).configureEach {
 	dependsOn 'openapi3'
+
+	// 기존 파일 삭제 후 build에 출력한 json 정적파일 복사 (local 확인용)
 	delete file('src/main/resources/static/docs/')
 	copy {
 		from "build/resources/main/static/docs"
@@ -87,6 +86,36 @@ tasks.withType(GenerateSwaggerUI) {
 	}
 }
 
-bootJar {
-	dependsOn 'createOutputDirectory', ':openapi3'
+tasks.register("ext") {
+	snippetsDir = file('build/generated-snippets')
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+
+	// test 스니펫 디렉터리를 출력으로 추가하도록 작업을 구성
+	outputs.dir 'snippetsDir'
+}
+
+tasks.named("bootJar") {
+	dependsOn asciidoctor
+	from("${asciidoctor.outputDir}") {
+		into 'static/docs'
+	}
+	dependsOn(':openapi3')
+}
+
+// 기존에 존재하던 docs 삭제
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
+}
+
+tasks.register('copyDocument', Copy) {
+	dependsOn asciidoctor
+	from file("$buildDir/docs/asciidoc")
+	into file("src/main/resources/static/docs")
+}
+
+tasks.named("build") {
+	dependsOn copyDocument
 }
