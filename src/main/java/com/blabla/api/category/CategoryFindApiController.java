@@ -1,6 +1,8 @@
 package com.blabla.api.category;
 
 import com.blabla.api.board.response.BoardFindResponse;
+import com.blabla.api.board.response.BoardsFindResponse;
+import com.blabla.api.category.response.CategoriesFindResponse;
 import com.blabla.api.category.response.CategoryFindResponse;
 import com.blabla.application.board.BoardFindService;
 import com.blabla.application.board.dto.BoardFindResultDto;
@@ -22,27 +24,29 @@ public class CategoryFindApiController {
     
     // TODO : 캐싱하기
     @GetMapping
-    public ResponseEntity<List<CategoryFindResponse>> findBoardCategories() {
+    public ResponseEntity<CategoriesFindResponse> findCategories() {
 
-        List<CategoryFindResultDto> dtoList = categoryFindService.findCategories();
-        List<CategoryFindResponse> response = dtoList.stream()
+        List<CategoryFindResultDto> categoryFindResultDtos = categoryFindService.findCategories();
+        List<CategoryFindResponse> categoryFindResponses = categoryFindResultDtos.stream()
                 .map(CategoryFindResponse::from)
                 .toList();
+        CategoriesFindResponse response = new CategoriesFindResponse(categoryFindResponses);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/{engName}")
-    public ResponseEntity<List<BoardFindResponse>> findBoardsByCategory(
+    public ResponseEntity<BoardsFindResponse> findBoardsByCategory(
             @PathVariable String engName,
             @RequestParam(value = "page-no", defaultValue = "0", required = false) int pageNo,
             @RequestParam(value = "page-size", defaultValue = "5", required = false) int pageSize,
             @RequestParam(value = "sort-by", defaultValue = "id", required = false) String sortBy
     ) {
 
-        List<BoardFindResultDto> dtoList = boardFindService.findBoardsByCategory(pageNo, pageSize, sortBy, engName);
-        List<BoardFindResponse> response = dtoList.stream()
+        List<BoardFindResultDto> boardFindResultDto = boardFindService.findBoardsByCategory(pageNo, pageSize, sortBy, engName);
+        List<BoardFindResponse> boardFindResponses = boardFindResultDto.stream()
                 .map(BoardFindResponse::from)
                 .toList();
+        BoardsFindResponse response = new BoardsFindResponse(boardFindResponses);
         return ResponseEntity.ok(response);
     }
 
