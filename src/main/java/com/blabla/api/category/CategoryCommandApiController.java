@@ -25,7 +25,7 @@ public class CategoryCommandApiController {
     ) {
 
         categoryCommandService.createCategory(auth.id(), CategoryCreateDto.from(request));
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{categoryId}")
@@ -36,7 +36,7 @@ public class CategoryCommandApiController {
     ) {
 
         categoryCommandService.updateCategory(auth.id(), categoryId, CategoryUpdateDto.from(request));
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{categoryId}")
@@ -46,6 +46,6 @@ public class CategoryCommandApiController {
     ) {
 
         categoryCommandService.deleteCategory(auth.id(), categoryId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

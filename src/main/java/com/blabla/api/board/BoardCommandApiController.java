@@ -40,7 +40,7 @@ public class BoardCommandApiController {
     ) {
 
         boardCommandService.updateBoard(auth.id(), boardId, BoardUpdateDto.from(request));
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{boardId}")
@@ -50,6 +50,6 @@ public class BoardCommandApiController {
     ) {
 
         boardCommandService.deleteBoardById(auth.id(), boardId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

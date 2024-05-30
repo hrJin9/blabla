@@ -20,7 +20,7 @@ public class LikesCommandApiController {
     ) {
 
         likesCommandService.createLikes(auth.id(), boardId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{boardId}")
@@ -30,7 +30,6 @@ public class LikesCommandApiController {
     ) {
 
         likesCommandService.deleteLikes(auth.id(), boardId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
-
 }
