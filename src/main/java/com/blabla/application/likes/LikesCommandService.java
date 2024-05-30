@@ -1,11 +1,11 @@
 package com.blabla.application.likes;
 
-import com.blabla.application.board.BoardFindService;
-import com.blabla.application.member.MemberFindService;
 import com.blabla.entity.Board;
 import com.blabla.entity.Likes;
 import com.blabla.entity.Member;
+import com.blabla.exception.BoardNotFoundException;
 import com.blabla.exception.LikesNotFoundException;
+import com.blabla.repository.board.BoardRepository;
 import com.blabla.repository.likes.LikesRepository;
 import com.blabla.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class LikesCommandService {
 
     private final LikesRepository likesRepository;
-    private final MemberFindService memberFindService;
     private final MemberRepository memberRepository;
-    private final BoardFindService boardFindService;
+    private final BoardRepository boardRepository;
 
     @Transactional
     public void createLikes(Long memberId, Long boardId) {
 
-        Board board = boardFindService.findById(boardId);
+        Board board = boardRepository.findByBoardId(boardId)
+                .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글입니다."));
         Member member = memberRepository.getReferenceById(memberId);
 
         likesRepository.findByBoardIdAndLikerId(boardId, memberId)

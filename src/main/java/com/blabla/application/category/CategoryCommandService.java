@@ -4,6 +4,8 @@ import com.blabla.application.category.dto.CategoryCreateDto;
 import com.blabla.application.category.dto.CategoryUpdateDto;
 import com.blabla.entity.Category;
 import com.blabla.entity.Member;
+import com.blabla.exception.CategoryCommandBadRequestException;
+import com.blabla.exception.CategoryNotFoundException;
 import com.blabla.repository.category.CategoryRepository;
 import com.blabla.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,9 @@ public class CategoryCommandService {
         Member creator = memberRepository.getReferenceById(memberId);
 
         // 중복된 order인지 검사
-        categoryFindService.isDuplicatedOrder(categoryCreateDto.upperId(), categoryCreateDto.orders());
+        if (categoryRepository.findByUpperIdAndOrders(categoryCreateDto.upperId(), categoryCreateDto.orders()).isPresent()) {
+            throw new CategoryCommandBadRequestException("카테고리 순서가 중복되었습니다.");
+        }
 
         Category savedCategory = Category.create(
                 categoryCreateDto.upperId(),
@@ -42,13 +46,14 @@ public class CategoryCommandService {
     public void updateCategory(Long memberId, Long categoryId, CategoryUpdateDto categoryUpdateDto) {
 
         Member modifier = memberRepository.getReferenceById(memberId);
-        Category category = categoryFindService.findById(categoryId);
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 카테고리입니다."));
 
-        if (!ObjectUtils.isEmpty(categoryUpdateDto.orders()) && !category.getOrders().equals(categoryUpdateDto.orders())) {
-
-            // 중복된 order인지 검사
-            Long upperId = (ObjectUtils.isEmpty(categoryUpdateDto.upperId())) ? category.getUpperId() :  categoryUpdateDto.upperId();
-            categoryFindService.isDuplicatedOrder(upperId, categoryUpdateDto.orders());
+        // 중복된 order인지 검사
+        if (!category.getUpperId().equals(categoryUpdateDto.upperId()) || !category.getOrders().equals(categoryUpdateDto.orders())) {
+            if (categoryRepository.findByUpperIdAndOrders(categoryUpdateDto.upperId(), categoryUpdateDto.orders()).isPresent()) {
+                throw new CategoryCommandBadRequestException("카테고리 순서가 중복되었습니다.");
+            }
         }
 
         category.update(
@@ -65,7 +70,8 @@ public class CategoryCommandService {
     public void deleteCategory(Long memberId, Long categoryId) {
         
         Member modifier = memberRepository.getReferenceById(memberId);
-        Category deletedCategory = categoryFindService.findById(categoryId);
+        Category deletedCategory = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("존재하지 않는 카테고리입니다."));
 
         deletedCategory.delete(modifier);
     }

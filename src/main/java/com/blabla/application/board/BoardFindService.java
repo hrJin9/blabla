@@ -65,12 +65,4 @@ public class BoardFindService {
                 .map(BoardFindResultDto::from)
                 .toList();
     }
-
-    @Transactional(readOnly = true)
-    public Board findById(Long boardId) {
-
-        return boardRepository.findById(boardId)
-                .orElseThrow(() -> new BoardNotFoundException("게시글이 존재하지 않습니다."));
-    }
-
 }
