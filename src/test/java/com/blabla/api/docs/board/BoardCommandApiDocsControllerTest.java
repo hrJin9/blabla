@@ -1,7 +1,10 @@
 package com.blabla.api.docs.board;
 
 import com.blabla.api.board.request.BoardCreateRequest;
+import com.blabla.api.board.request.BoardUpdateRequest;
 import com.blabla.api.docs.DocsControllerTest;
+import com.blabla.entity.Board;
+import com.epages.restdocs.apispec.ResourceDocumentation;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.Schema;
 import org.junit.jupiter.api.Test;
@@ -10,10 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.util.ObjectUtils;
 
+import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
 import static com.blabla.fixture.BoardFixture.BOARD1_CAT1_MEM1;
+import static com.blabla.fixture.BoardFixture.BOARD4_CAT2_MEM1_1;
 import static com.blabla.fixture.CategoryFixture.CATEGORY1;
 import static com.blabla.fixture.MemberFixture.MEMBER1;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
@@ -70,97 +75,72 @@ public class BoardCommandApiDocsControllerTest extends DocsControllerTest {
                 .andExpect(status().isCreated());
     }
 
-//    @Test
-//    void 게시글_수정_요청() throws Exception {
-//
-//        // given
-//        final int pageNo = 0;
-//        final int pageSize = 5;
-//        final String sortBy = "id";
-//        final Page<Board> BOARD_PAGE = new PageImpl<>(List.of(BOARD1_CAT1_MEM1, BOARD2_CAT1_MEM2));
-//
-//        final List<BoardFindResultDto> response = BOARD_PAGE
-//                .map(BoardFindResultDto::from).toList();
-//        when(boardFindService.findAllBoards(pageNo, pageSize, sortBy)).thenReturn(response);
-//
-//        // when, then
-//        mockMvc.perform(RestDocumentationRequestBuilders
-//                        .patch("/api/command/boards/{boardId}", BOARD1_CAT1_MEM1.getId())
-//                        .queryParam("page-no", "0")
-//                        .queryParam("page-size", "5")
-//                        .queryParam("sort-by", "id")
-//                )
-//                .andDo(document("boards/find-boards",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        resource(
-//                                ResourceSnippetParameters.builder()
-//                                        .tag("게시판 API")
-//                                        .summary("게시판 조회 API")
-//                                        .description("모든 게시글 페이징 조회")
-//                                        .queryParameters(
-//                                                ResourceDocumentation.parameterWithName("page-no").description("페이지 번호"),
-//                                                ResourceDocumentation.parameterWithName("page-size").description("페이지 사이즈"),
-//                                                ResourceDocumentation.parameterWithName("sort-by").description("정렬 조건"))
-//                                        .responseFields(
-//                                                fieldWithPath("[].subject").description("게시글 제목"),
-//                                                fieldWithPath("[].content").description("게시글 내용"),
-//                                                fieldWithPath("[].category").description("카테고리 이름"),
-//                                                fieldWithPath("[].tagNames").description("태그이름"),
-//                                                fieldWithPath("[].readCount").description("조회수"),
-//                                                fieldWithPath("[].likesCount").description("좋아요 개수")
-//                                        )
-//                                        .responseSchema(Schema.schema("BoardFindResponse"))
-//                                        .build()
-//                        )))
-//                .andExpect(status().isOk());
-//    }
-//
-//    @Test
-//    void 게시글_삭제_요청() throws Exception {
-//
-//        // given
-//        final int pageNo = 0;
-//        final int pageSize = 5;
-//        final String sortBy = "id";
-//        final Page<Board> BOARD_PAGE = new PageImpl<>(List.of(BOARD1_CAT1_MEM1, BOARD2_CAT1_MEM2));
-//
-//        final List<BoardFindResultDto> response = BOARD_PAGE
-//                .map(BoardFindResultDto::from).toList();
-//        when(boardFindService.findAllBoards(pageNo, pageSize, sortBy)).thenReturn(response);
-//
-//        // when, then
-//        mockMvc.perform(RestDocumentationRequestBuilders
-//                        .delete("/api/command/boards/{boardId}", BOARD_ID)
-//                        .queryParam("page-no", "0")
-//                        .queryParam("page-size", "5")
-//                        .queryParam("sort-by", "id")
-//                )
-//                .andDo(document("boards/find-boards",
-//                        preprocessRequest(prettyPrint()),
-//                        preprocessResponse(prettyPrint()),
-//                        resource(
-//                                ResourceSnippetParameters.builder()
-//                                        .tag("게시판 API")
-//                                        .summary("게시판 조회 API")
-//                                        .description("모든 게시글 페이징 조회")
-//                                        .queryParameters(
-//                                                ResourceDocumentation.parameterWithName("page-no").description("페이지 번호"),
-//                                                ResourceDocumentation.parameterWithName("page-size").description("페이지 사이즈"),
-//                                                ResourceDocumentation.parameterWithName("sort-by").description("정렬 조건"))
-//                                        .responseFields(
-//                                                fieldWithPath("[].subject").description("게시글 제목"),
-//                                                fieldWithPath("[].content").description("게시글 내용"),
-//                                                fieldWithPath("[].category").description("카테고리 이름"),
-//                                                fieldWithPath("[].tagNames").description("태그이름"),
-//                                                fieldWithPath("[].readCount").description("조회수"),
-//                                                fieldWithPath("[].likesCount").description("좋아요 개수")
-//                                        )
-//                                        .responseSchema(Schema.schema("BoardFindResponse"))
-//                                        .build()
-//                        )))
-//                .andExpect(status().isOk());
-//
-//    }
+    @Test
+    void 게시글_수정_요청() throws Exception {
+
+        // given
+        final Board board = BOARD4_CAT2_MEM1_1;
+        BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest(board.getSubject(), board.getContent(), board.getCategory().getId(), List.of(board.getTags().split(",")), false);
+        when(boardRepository.findById(board.getId())).thenReturn(Optional.of(board));
+        when(categoryRepository.findById(board.getCategory().getId())).thenReturn(Optional.of(board.getCategory()));
+
+        // when, then
+        mockMvc.perform(RestDocumentationRequestBuilders
+                        .patch("/api/command/boards/{boardId}", BOARD1_CAT1_MEM1.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(boardUpdateRequest))
+                        .header(HttpHeaders.AUTHORIZATION, MEMBER_BEARER_HEADER)
+                )
+                .andDo(document("boards/update-board",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("게시판 API")
+                                        .summary("게시판 커맨드 API")
+                                        .description("게시글 수정")
+                                        .requestHeaders(
+                                                headerWithName("Authorization").description("Bearer")
+                                        )
+                                        .requestFields(
+                                                fieldWithPath("subject").description("게시글 제목"),
+                                                fieldWithPath("content").description("게시글 내용"),
+                                                fieldWithPath("categoryId").description("카테고리 아이디"),
+                                                fieldWithPath("tagNames").description("태그 이름 리스트"),
+                                                fieldWithPath("deleted").description("삭제 여부")
+                                        )
+                                        .requestSchema(Schema.schema("BoardUpdateRequest"))
+                                        .build()
+                        )))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void 게시글_삭제_요청() throws Exception {
+
+        // given
+        when(boardRepository.findById(BOARD1_CAT1_MEM1.getId())).thenReturn(Optional.of(BOARD1_CAT1_MEM1));
+
+        // when, then
+        mockMvc.perform(RestDocumentationRequestBuilders
+                        .delete("/api/command/boards/{boardId}", BOARD1_CAT1_MEM1.getId())
+                        .header(HttpHeaders.AUTHORIZATION, MEMBER_BEARER_HEADER)
+                )
+                .andDo(document("boards/delete-board",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        resource(
+                                ResourceSnippetParameters.builder()
+                                        .tag("게시판 API")
+                                        .summary("게시판 조회 API")
+                                        .description("모든 게시글 페이징 조회")
+                                        .requestHeaders(
+                                                headerWithName("Authorization").description("Bearer")
+                                        )
+                                        .build()
+                        )))
+                .andExpect(status().isNoContent());
+
+    }
 
 }
