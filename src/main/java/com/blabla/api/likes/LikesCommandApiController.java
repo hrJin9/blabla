@@ -14,22 +14,12 @@ public class LikesCommandApiController {
     private final LikesCommandService likesCommandService;
 
     @PostMapping("/{boardId}")
-    public ResponseEntity<Void> createLike(
+    public ResponseEntity<Void> createOrDeleteLikes(
         AuthInfo auth,
         @PathVariable Long boardId
     ) {
 
-        likesCommandService.createLikes(auth.id(), boardId);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/{boardId}")
-    public ResponseEntity<Void> deleteLike(
-        AuthInfo auth,
-        @PathVariable Long boardId
-    ) {
-
-        likesCommandService.deleteLikes(auth.id(), boardId);
+        Long likesId = likesCommandService.createOrDeleteLikes(auth.id(), boardId);
         return ResponseEntity.ok().build();
     }
 }
