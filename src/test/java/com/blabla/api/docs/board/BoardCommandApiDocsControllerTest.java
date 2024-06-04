@@ -3,6 +3,7 @@ package com.blabla.api.docs.board;
 import com.blabla.api.board.request.BoardCreateRequest;
 import com.blabla.api.board.request.BoardUpdateRequest;
 import com.blabla.api.docs.DocsControllerTest;
+import com.blabla.application.board.dto.BoardCreateDto;
 import com.blabla.entity.Board;
 import com.epages.restdocs.apispec.ResourceDocumentation;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
@@ -35,15 +36,12 @@ public class BoardCommandApiDocsControllerTest extends DocsControllerTest {
     void 게시글_등록_요청() throws Exception {
 
         // given
+        BoardCreateRequest boardCreateRequest = new BoardCreateRequest(CATEGORY1.getId(), List.of("태그1", "태그2"), "게시글 제목", "게시글 내용");
+
         when(memberRepository.findById(MEMBER1.getId())).thenReturn(Optional.of(MEMBER1));
         when(categoryRepository.findById(CATEGORY1.getId())).thenReturn(Optional.of(CATEGORY1));
-
-        BoardCreateRequest boardCreateRequest = new BoardCreateRequest(
-                CATEGORY1.getId(),
-                (ObjectUtils.isEmpty(BOARD1_CAT1_MEM1.getTags())) ? null : List.of(BOARD1_CAT1_MEM1.getTags().split(",")),
-                BOARD1_CAT1_MEM1.getSubject(),
-                BOARD1_CAT1_MEM1.getContent()
-        );
+        when(boardCommandService.createBoard(MEMBER1.getId(), BoardCreateDto.from(boardCreateRequest)))
+                .thenReturn(BOARD1_CAT1_MEM1.getId());
 
         // when, then
         mockMvc.perform(RestDocumentationRequestBuilders
@@ -112,7 +110,7 @@ public class BoardCommandApiDocsControllerTest extends DocsControllerTest {
                                         .requestSchema(Schema.schema("BoardUpdateRequest"))
                                         .build()
                         )))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -139,7 +137,7 @@ public class BoardCommandApiDocsControllerTest extends DocsControllerTest {
                                         )
                                         .build()
                         )))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
 
     }
 

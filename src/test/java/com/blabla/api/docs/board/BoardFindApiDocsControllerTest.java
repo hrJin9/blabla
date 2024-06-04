@@ -7,12 +7,12 @@ import com.epages.restdocs.apispec.ResourceDocumentation;
 import com.epages.restdocs.apispec.ResourceSnippetParameters;
 import com.epages.restdocs.apispec.Schema;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.*;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.blabla.fixture.BoardFixture.*;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.document;
@@ -31,11 +31,12 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
         final int pageNo = 0;
         final int pageSize = 5;
         final String sortBy = "id";
-        final Page<Board> BOARD_PAGE = new PageImpl<>(List.of(BOARD1_CAT1_MEM1, BOARD2_CAT1_MEM2));
+        final List<Board> boards = List.of(BOARD1_CAT1_MEM1, BOARD2_CAT1_MEM2, BOARD3_CAT1_MEM3);
 
-        final List<BoardFindResultDto> response = BOARD_PAGE
-                .map(BoardFindResultDto::from).toList();
-        when(boardFindService.findAllBoards(pageNo, pageSize, sortBy)).thenReturn(response);
+        when(boardRepository.findAllBoards(PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending())))
+                .thenReturn(new PageImpl<>(boards));
+        when(boardFindService.findAllBoards(pageNo, pageSize, sortBy))
+                .thenReturn(List.of(BoardFindResultDto.from(BOARD1_CAT1_MEM1), BoardFindResultDto.from(BOARD2_CAT1_MEM2), BoardFindResultDto.from(BOARD3_CAT1_MEM3)));
 
         // when, then
         mockMvc.perform(RestDocumentationRequestBuilders
@@ -57,14 +58,14 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                                                 ResourceDocumentation.parameterWithName("page-size").description("페이지 사이즈"),
                                                 ResourceDocumentation.parameterWithName("sort-by").description("정렬 조건"))
                                         .responseFields(
-                                                fieldWithPath("[].subject").description("게시글 제목"),
-                                                fieldWithPath("[].content").description("게시글 내용"),
-                                                fieldWithPath("[].category").description("카테고리 이름"),
-                                                fieldWithPath("[].tagNames").description("태그이름"),
-                                                fieldWithPath("[].readCount").description("조회수"),
-                                                fieldWithPath("[].likesCount").description("좋아요 개수")
+                                                fieldWithPath("boards[].subject").description("게시글 제목"),
+                                                fieldWithPath("boards[].content").description("게시글 내용"),
+                                                fieldWithPath("boards[].category").description("카테고리 이름"),
+                                                fieldWithPath("boards[].tagNames").description("태그이름"),
+                                                fieldWithPath("boards[].readCount").description("조회수"),
+                                                fieldWithPath("boards[].likesCount").description("좋아요 개수")
                                         )
-                                        .responseSchema(Schema.schema("BoardFindResponse"))
+                                        .responseSchema(Schema.schema("BoardsFindResponse"))
                                         .build()
                         )))
                 .andExpect(status().isOk());
@@ -72,14 +73,16 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
 
     @Test
     void 한_게시글_조회_요청() throws Exception {
+
         // given
-        final Long BOARD_ID = 1L;
-        when(boardFindService.findBoardAndRead(BOARD_ID))
+        when(boardRepository.findByBoardId(BOARD1_CAT1_MEM1.getId()))
+                .thenReturn(Optional.of(BOARD1_CAT1_MEM1));
+        when(boardFindService.findBoardAndRead(BOARD1_CAT1_MEM1.getId()))
                 .thenReturn(BoardFindResultDto.from(BOARD1_CAT1_MEM1));
 
         // when, then
         mockMvc.perform(RestDocumentationRequestBuilders
-                        .get("/api/boards/{boardId}", BOARD_ID)
+                        .get("/api/boards/{boardId}", BOARD1_CAT1_MEM1.getId())
                 )
                 .andDo(document("boards/find-board",
                         preprocessRequest(prettyPrint()),
@@ -99,7 +102,7 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                                                 fieldWithPath("readCount").description("조회수"),
                                                 fieldWithPath("likesCount").description("좋아요 개수")
                                         )
-                                        .responseSchema(Schema.schema("BoardFindResponse"))
+                                        .responseSchema(Schema.schema("boardFindResponse"))
                                         .build()
                         )))
                 .andExpect(status().isOk());
