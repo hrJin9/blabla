@@ -14,6 +14,7 @@ public final class LikesFixture {
     public static final Likes LIKES_6 = new Likes(6L, BOARD7_CAT2_MEM3_DEL, MEMBER1);
     public static final Likes LIKES_7 = new Likes(7L, BOARD5_CAT2_MEM1_2, MEMBER2);
     public static final Likes LIKES_8 = new Likes(8L, BOARD8_CAT2_MEM4, MEMBER3);
+    public static final Likes LIKES_9 = new Likes(1L, BOARD1_CAT1_MEM1, MEMBER1);
 
     public LikesFixture() {
     }
