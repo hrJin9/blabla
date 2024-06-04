@@ -55,6 +55,10 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+	// ehcache
+	implementation group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.6'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '2.6.3'
 }
 
 // 생성된 API 스펙이 어느 위치에 있는지 지정
