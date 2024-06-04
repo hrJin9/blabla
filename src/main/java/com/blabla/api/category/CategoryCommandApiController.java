@@ -24,7 +24,7 @@ public class CategoryCommandApiController {
             @RequestBody @Valid CategoryCreateRequest request
     ) {
 
-        categoryCommandService.createCategory(auth.id(), CategoryCreateDto.from(request));
+        Long categoryId = categoryCommandService.createCategory(auth.id(), CategoryCreateDto.from(request));
         return ResponseEntity.ok().build();
     }
 
@@ -35,7 +35,7 @@ public class CategoryCommandApiController {
             @RequestBody CategoryUpdateRequest request
     ) {
 
-        categoryCommandService.updateCategory(auth.id(), categoryId, CategoryUpdateDto.from(request));
+        Long updatedCategoryId = categoryCommandService.updateCategory(auth.id(), categoryId, CategoryUpdateDto.from(request));
         return ResponseEntity.ok().build();
     }
 
@@ -45,7 +45,7 @@ public class CategoryCommandApiController {
         @PathVariable Long categoryId
     ) {
 
-        categoryCommandService.deleteCategory(auth.id(), categoryId);
+        Long deletedCategoryId = categoryCommandService.deleteCategory(auth.id(), categoryId);
         return ResponseEntity.ok().build();
     }
 }

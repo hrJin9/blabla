@@ -4,12 +4,14 @@ import com.blabla.entity.Category;
 
 public record CategoryFindResultDto (
         Long id,
-        String categoryName
+        String categoryName,
+        String categoryEngName
 ) {
     public static CategoryFindResultDto from(Category category) {
         return new CategoryFindResultDto(
                 category.getId(),
-                category.getName()
+                category.getName(),
+                category.getEngName()
         );
     }
 }
