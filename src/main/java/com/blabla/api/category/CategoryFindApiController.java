@@ -22,11 +22,21 @@ public class CategoryFindApiController {
     private final CategoryFindService categoryFindService;
     private final BoardFindService boardFindService;
     
-    // TODO : 캐싱하기
-    @GetMapping
+    @GetMapping("/no-cache")
     public ResponseEntity<CategoriesFindResponse> findCategories() {
 
         List<CategoryFindResultDto> categoryFindResultDtos = categoryFindService.findCategories();
+        List<CategoryFindResponse> categoryFindResponses = categoryFindResultDtos.stream()
+                .map(CategoryFindResponse::from)
+                .toList();
+        CategoriesFindResponse response = new CategoriesFindResponse(categoryFindResponses);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/cache")
+    public ResponseEntity<CategoriesFindResponse> findCategoriesUsingCache() {
+
+        List<CategoryFindResultDto> categoryFindResultDtos = categoryFindService.findCategoriesUsingCache();
         List<CategoryFindResponse> categoryFindResponses = categoryFindResultDtos.stream()
                 .map(CategoryFindResponse::from)
                 .toList();
