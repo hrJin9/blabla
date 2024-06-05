@@ -17,6 +17,11 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query(value = "SELECT b FROM Board b " +
             "left join fetch b.category " +
+            "where b.writer.id = :memberId")
+    Page<Board> findAllBoardsByMemberId(Pageable pageable, Long memberId);
+
+    @Query(value = "SELECT b FROM Board b " +
+            "left join fetch b.category " +
             "WHERE b.id = :boardId")
     Optional<Board> findByBoardId(Long boardId);
 

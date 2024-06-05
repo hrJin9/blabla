@@ -1,6 +1,7 @@
 package com.blabla.application.board;
 
 import com.blabla.application.board.dto.BoardFindResultDto;
+import com.blabla.application.board.dto.BoardSearchDto;
 import com.blabla.entity.Board;
 import com.blabla.exception.BoardNotFoundException;
 import com.blabla.repository.board.BoardRepository;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 
 import java.util.List;
 
@@ -22,11 +24,20 @@ public class BoardFindService {
 
     // TODO: 인덱스 활용하기
     @Transactional(readOnly = true)
-    public List<BoardFindResultDto> findAllBoards(int pageNo, int pageSize, String sortBy) {
+    public List<BoardFindResultDto> findAllBoards(BoardSearchDto boardSearchDto) {
 
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy).descending());
-        Page<Board> boardPage  = boardRepository.findAllBoards(pageable);
+        Pageable pageable = PageRequest.of(boardSearchDto.pageNo(), boardSearchDto.pageSize(), Sort.by(boardSearchDto.sortBy()).descending());
+        Page<Board> boardPage = boardRepository.findAllBoards(pageable);
+        return boardPage.stream()
+                .map(BoardFindResultDto::from)
+                .toList();
+    }
 
+    @Transactional(readOnly = true)
+    public List<BoardFindResultDto> findAllBoardsByMemberId(BoardSearchDto boardSearchDto, Long memberId) {
+
+        Pageable pageable = PageRequest.of(boardSearchDto.pageNo(), boardSearchDto.pageSize(), Sort.by(boardSearchDto.sortBy()).descending());
+        Page<Board> boardPage = boardRepository.findAllBoardsByMemberId(pageable, memberId);
         return boardPage.stream()
                 .map(BoardFindResultDto::from)
                 .toList();
@@ -65,4 +76,5 @@ public class BoardFindService {
                 .map(BoardFindResultDto::from)
                 .toList();
     }
+
 }
