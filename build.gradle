@@ -90,15 +90,11 @@ tasks.withType(GenerateSwaggerUI).configureEach {
 	}
 }
 
-tasks.register("ext") {
-	snippetsDir = file('build/generated-snippets')
-}
-
 tasks.named('test') {
 	useJUnitPlatform()
 
 	// test 스니펫 디렉터리를 출력으로 추가하도록 작업을 구성
-	outputs.dir 'snippetsDir'
+	outputs.dir 'build/generated-snippets'
 }
 
 tasks.named("bootJar") {
@@ -122,4 +118,8 @@ tasks.register('copyDocument', Copy) {
 
 tasks.named("build") {
 	dependsOn copyDocument
+}
+
+jar {
+	enabled = false
 }
