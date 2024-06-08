@@ -4,7 +4,7 @@ spring:
       on-profile: test
   datasource:
     username: blabla
-    password: blabla123!@#
+    password: blabla123
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/blabla?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&autoReconnect=true&allowPublicKeyRetrieval=true
 
