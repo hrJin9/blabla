@@ -3,7 +3,7 @@ spring:
     active:
       on-profile: dev
   datasource:
-    url: jdbc:mysql://13.209.16.211:3306/blabla?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&autoReconnect=true&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://13.209.16.211:3306/blabla
     username: blabla
     password: blabla123
     driver-class-name: com.mysql.cj.jdbc.Driver
