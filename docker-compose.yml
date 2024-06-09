@@ -23,6 +23,8 @@ services:
     container_name: blabla-spring
     ports:
       - 8080:8080
+    volumes:
+      - ./spring/compose:/compose
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://blabla-mysql:3306/blabla?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: blabla
