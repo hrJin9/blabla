@@ -5,4 +5,4 @@ ARG JAR_FILE=build/libs/*.jar
 # JAR file copy
 COPY ${JAR_FILE} app.jar
 
-ENTRYPOINT ["java", "-jar", "-Dspring.config.location=classpath:/config/application.yml", "app.jar"]
+ENTRYPOINT ["java", "-jar", "-Dspring.config.location=file:/config/application.yml", "app.jar"]
