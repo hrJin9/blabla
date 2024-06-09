@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: blabla-mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: blabla
+      MYSQL_USER: blabla
+      MYSQL_PASSWORD: blabla123
+    networks:
+      - blabla
+
+  app:
+    image: dallae/blabla-spring
+    container_name: blabla-spring
+    ports:
+      - 8080:8080
+    build:
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://blabla-mysql:3306/blabla?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&autoReconnect=true&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: blabla
+      SPRING_DATASOURCE_PASSWORD: blabla123
+    depends_on:
+      - mysql
+    networks:
+      - blabla
+
+networks:
+  blabla:
