@@ -4,5 +4,5 @@ FROM openjdk:17-jdk
 ARG JAR_FILE=build/libs/*.jar
 # JAR file copy
 COPY ${JAR_FILE} app.jar
-정
+
 ENTRYPOINT ["java", "-jar", "-Dspring.config.location=classpath:application.yml", "app.jar"]
