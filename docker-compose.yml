@@ -1,8 +1,9 @@
-version: '3.8'
+version: '3'
 services:
   mysql:
     image: mysql:latest
     container_name: blabla-mysql
+    restart: unless-stopped
     ports:
       - 3306:3306
     environment:
@@ -21,7 +22,7 @@ services:
     build:
       dockerfile: Dockerfile
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://blabla-mysql:3306/blabla?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&autoReconnect=true&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_URL: jdbc:mysql://blabla-mysql:3306/blabla?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: blabla
       SPRING_DATASOURCE_PASSWORD: blabla123
     depends_on:
