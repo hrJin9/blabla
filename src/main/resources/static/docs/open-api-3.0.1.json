@@ -9,8 +9,703 @@
     "url" : "http://localhost:8080"
   } ],
   "tags" : [ ],
-  "paths" : { },
+  "paths" : {
+    "/api/auth/register" : {
+      "post" : {
+        "tags" : [ "인증" ],
+        "summary" : "회원 가입",
+        "description" : "회원 가입",
+        "operationId" : "auth/register",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MemberCreateRequest"
+              },
+              "examples" : {
+                "auth/register" : {
+                  "value" : "{\r\n  \"loginId\" : \"tester1\",\r\n  \"email\" : \"tester1@gmail.com\",\r\n  \"password\" : \"password123!@#\",\r\n  \"nickName\" : \"테스터\",\r\n  \"phone\" : \"01012345678\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201"
+          }
+        }
+      }
+    },
+    "/api/boards/{boardId}" : {
+      "get" : {
+        "tags" : [ "게시판" ],
+        "summary" : "한 게시글 조회",
+        "description" : "한 게시글 조회",
+        "operationId" : "boards/find-board",
+        "parameters" : [ {
+          "name" : "boardId",
+          "in" : "path",
+          "description" : "게시글 아이디",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/boardFindResponse"
+                },
+                "examples" : {
+                  "boards/find-board" : {
+                    "value" : "{\r\n  \"subject\" : \"게시판1\",\r\n  \"content\" : \"내용\",\r\n  \"category\" : \"카테고리1\",\r\n  \"tagNames\" : [ ],\r\n  \"readCount\" : 0,\r\n  \"likesCount\" : 0\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories/no-cache" : {
+      "get" : {
+        "tags" : [ "카테고리 API" ],
+        "summary" : "카테고리 조회 API",
+        "description" : "모든 카테고리 조회",
+        "operationId" : "categories/find-categories",
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CategoriesFindResponse"
+                },
+                "examples" : {
+                  "categories/find-categories" : {
+                    "value" : "{\r\n  \"categories\" : [ {\r\n    \"id\" : 1,\r\n    \"categoryName\" : \"카테고리1\",\r\n    \"categoryEngName\" : \"category1\"\r\n  }, {\r\n    \"id\" : 2,\r\n    \"categoryName\" : \"카테고리2\",\r\n    \"categoryEngName\" : \"category1\"\r\n  }, {\r\n    \"id\" : 3,\r\n    \"categoryName\" : \"카테고리3\",\r\n    \"categoryEngName\" : \"category1\"\r\n  }, {\r\n    \"id\" : 4,\r\n    \"categoryName\" : \"카테고리4\",\r\n    \"categoryEngName\" : \"category1\"\r\n  } ]\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/command/boards" : {
+      "post" : {
+        "tags" : [ "게시판 API" ],
+        "summary" : "게시판 커맨드 API",
+        "description" : "게시글 작성",
+        "operationId" : "boards/create-boards",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Bearer",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MDgyMzk3fQ.yGGKMJVfyA3NF8oog5X10IlYh3HbUUSJpZGZy38s1C9oPvGogZPKBlSZ97FDFfBq_LxTePN06ilSt6NIdREguw"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BoardCreateRequest"
+              },
+              "examples" : {
+                "boards/create-boards" : {
+                  "value" : "{\r\n  \"categoryId\" : 1,\r\n  \"tagNames\" : [ \"태그1\", \"태그2\" ],\r\n  \"subject\" : \"게시글 제목\",\r\n  \"content\" : \"게시글 내용\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "201" : {
+            "description" : "201"
+          }
+        }
+      }
+    },
+    "/api/command/categories" : {
+      "post" : {
+        "tags" : [ "카테고리 API" ],
+        "summary" : "카테고리 커맨드 API",
+        "description" : "카테고리 생성",
+        "operationId" : "categories/create-category",
+        "parameters" : [ {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Bearer",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MDgyMzk4fQ.0CVd22OxgyFCV5Yhtn2XStr5JHxvHCZH_5XzBQlIYM4WcF8c4aKmZvvWnwmiNvv3Qa07IvH9u3iDrDt-BteZ7Q"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CategoryCreateRequest"
+              },
+              "examples" : {
+                "categories/create-category" : {
+                  "value" : "{\r\n  \"upperId\" : null,\r\n  \"orders\" : 1,\r\n  \"name\" : \"카테고리1\",\r\n  \"engName\" : \"category1\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
+    "/api/likes/{memberId}" : {
+      "get" : {
+        "tags" : [ "좋아요 API" ],
+        "summary" : "좋아요 조회 API",
+        "description" : "특정 유저의 좋아요한 게시글 조회",
+        "operationId" : "boards/find-boards",
+        "parameters" : [ {
+          "name" : "memberId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "page-no",
+          "in" : "query",
+          "description" : "페이지 번호",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "page-size",
+          "in" : "query",
+          "description" : "페이지 사이즈",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "sort-by",
+          "in" : "query",
+          "description" : "정렬 조건",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BoardsFindResponse"
+                },
+                "examples" : {
+                  "boards/find-boards" : {
+                    "value" : "{\r\n  \"boards\" : [ {\r\n    \"subject\" : \"게시판1\",\r\n    \"content\" : \"내용\",\r\n    \"category\" : \"카테고리1\",\r\n    \"tagNames\" : [ ],\r\n    \"readCount\" : 0,\r\n    \"likesCount\" : 0\r\n  }, {\r\n    \"subject\" : \"게시판2\",\r\n    \"content\" : \"내용\",\r\n    \"category\" : \"카테고리1\",\r\n    \"tagNames\" : [ \"게시판\", \"태그\" ],\r\n    \"readCount\" : 1,\r\n    \"likesCount\" : 0\r\n  }, {\r\n    \"subject\" : \"게시판3\",\r\n    \"content\" : \"내용\",\r\n    \"category\" : \"카테고리1\",\r\n    \"tagNames\" : [ \"태그\" ],\r\n    \"readCount\" : 5,\r\n    \"likesCount\" : 0\r\n  } ]\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/command/boards/{boardId}" : {
+      "delete" : {
+        "tags" : [ "게시판 API" ],
+        "summary" : "게시판 조회 API",
+        "description" : "모든 게시글 페이징 조회",
+        "operationId" : "boards/delete-board",
+        "parameters" : [ {
+          "name" : "boardId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Bearer",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MDgyMzk3fQ.yGGKMJVfyA3NF8oog5X10IlYh3HbUUSJpZGZy38s1C9oPvGogZPKBlSZ97FDFfBq_LxTePN06ilSt6NIdREguw"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "게시판 API" ],
+        "summary" : "게시판 커맨드 API",
+        "description" : "게시글 수정",
+        "operationId" : "boards/update-board",
+        "parameters" : [ {
+          "name" : "boardId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Bearer",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MDgyMzk3fQ.yGGKMJVfyA3NF8oog5X10IlYh3HbUUSJpZGZy38s1C9oPvGogZPKBlSZ97FDFfBq_LxTePN06ilSt6NIdREguw"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BoardUpdateRequest"
+              },
+              "examples" : {
+                "boards/update-board" : {
+                  "value" : "{\r\n  \"subject\" : \"게시판4\",\r\n  \"content\" : \"내용\",\r\n  \"categoryId\" : 2,\r\n  \"tagNames\" : [ \"태그\", \"태그2\", \"태그3\" ],\r\n  \"deleted\" : false\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
+    "/api/command/categories/{categoryId}" : {
+      "delete" : {
+        "tags" : [ "카테고리 API" ],
+        "summary" : "카테고리 커맨드 API",
+        "description" : "카테고리 삭제",
+        "operationId" : "categories/delete-category",
+        "parameters" : [ {
+          "name" : "categoryId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Bearer",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MDgyMzk4fQ.0CVd22OxgyFCV5Yhtn2XStr5JHxvHCZH_5XzBQlIYM4WcF8c4aKmZvvWnwmiNvv3Qa07IvH9u3iDrDt-BteZ7Q"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "카테고리 API" ],
+        "summary" : "카테고리 커맨드 API",
+        "description" : "카테고리 수정",
+        "operationId" : "categories/update-category",
+        "parameters" : [ {
+          "name" : "categoryId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Bearer",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MDgyMzk4fQ.0CVd22OxgyFCV5Yhtn2XStr5JHxvHCZH_5XzBQlIYM4WcF8c4aKmZvvWnwmiNvv3Qa07IvH9u3iDrDt-BteZ7Q"
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CategoryUpdateRequest"
+              },
+              "examples" : {
+                "categories/update-category" : {
+                  "value" : "{\r\n  \"upperId\" : null,\r\n  \"orders\" : 1,\r\n  \"name\" : \"변경한 카테고리 명\",\r\n  \"engName\" : \"category1\",\r\n  \"deleted\" : false\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
+    "/api/command/likes/{boardId}" : {
+      "post" : {
+        "tags" : [ "좋아요 API" ],
+        "summary" : "좋아요 커맨드 API",
+        "description" : "좋아요 삭제",
+        "operationId" : "likes/create-or-delete-likes",
+        "parameters" : [ {
+          "name" : "boardId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "Authorization",
+          "in" : "header",
+          "description" : "Bearer",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          },
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MDgyMzk4fQ.0CVd22OxgyFCV5Yhtn2XStr5JHxvHCZH_5XzBQlIYM4WcF8c4aKmZvvWnwmiNvv3Qa07IvH9u3iDrDt-BteZ7Q"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "200"
+          }
+        }
+      }
+    },
+    "/api/members/{memberId}/boards" : {
+      "get" : {
+        "tags" : [ "게시판 API" ],
+        "summary" : "게시판 조회 API",
+        "description" : "모든 게시글 페이징 조회",
+        "operationId" : "/boards/find-boards-by-member",
+        "parameters" : [ {
+          "name" : "memberId",
+          "in" : "path",
+          "description" : "",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BoardSearchRequest"
+              },
+              "examples" : {
+                "/boards/find-boards-by-member" : {
+                  "value" : "{\r\n  \"pageNo\" : 0,\r\n  \"pageSize\" : 5,\r\n  \"sortBy\" : \"createdAt\",\r\n  \"searchCondition\" : null,\r\n  \"searchKeyword\" : null\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BoardsFindResponse"
+                },
+                "examples" : {
+                  "/boards/find-boards-by-member" : {
+                    "value" : "{\r\n  \"boards\" : [ {\r\n    \"subject\" : \"게시판1\",\r\n    \"content\" : \"내용\",\r\n    \"category\" : \"카테고리1\",\r\n    \"tagNames\" : [ ],\r\n    \"readCount\" : 0,\r\n    \"likesCount\" : 0\r\n  }, {\r\n    \"subject\" : \"게시판2\",\r\n    \"content\" : \"내용\",\r\n    \"category\" : \"카테고리1\",\r\n    \"tagNames\" : [ \"게시판\", \"태그\" ],\r\n    \"readCount\" : 1,\r\n    \"likesCount\" : 0\r\n  }, {\r\n    \"subject\" : \"게시판3\",\r\n    \"content\" : \"내용\",\r\n    \"category\" : \"카테고리1\",\r\n    \"tagNames\" : [ \"태그\" ],\r\n    \"readCount\" : 5,\r\n    \"likesCount\" : 0\r\n  } ]\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
   "components" : {
-    "schemas" : { }
+    "schemas" : {
+      "CategoriesFindResponse" : {
+        "title" : "CategoriesFindResponse",
+        "type" : "object",
+        "properties" : {
+          "categories" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "categoryEngName" : {
+                  "type" : "string",
+                  "description" : "카테고리 영문 이름"
+                },
+                "id" : {
+                  "type" : "number",
+                  "description" : "카테고리 id"
+                },
+                "categoryName" : {
+                  "type" : "string",
+                  "description" : "카테고리 이름"
+                }
+              }
+            }
+          }
+        }
+      },
+      "boardFindResponse" : {
+        "title" : "boardFindResponse",
+        "type" : "object",
+        "properties" : {
+          "likesCount" : {
+            "type" : "number",
+            "description" : "좋아요 개수"
+          },
+          "subject" : {
+            "type" : "string",
+            "description" : "게시글 제목"
+          },
+          "readCount" : {
+            "type" : "number",
+            "description" : "조회수"
+          },
+          "category" : {
+            "type" : "string",
+            "description" : "카테고리 이름"
+          },
+          "tagNames" : {
+            "type" : "array",
+            "description" : "태그이름",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "게시글 내용"
+          }
+        }
+      },
+      "MemberCreateRequest" : {
+        "title" : "MemberCreateRequest",
+        "type" : "object"
+      },
+      "BoardUpdateRequest" : {
+        "title" : "BoardUpdateRequest",
+        "type" : "object",
+        "properties" : {
+          "deleted" : {
+            "type" : "boolean",
+            "description" : "삭제 여부"
+          },
+          "subject" : {
+            "type" : "string",
+            "description" : "게시글 제목"
+          },
+          "tagNames" : {
+            "type" : "array",
+            "description" : "태그 이름 리스트",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "categoryId" : {
+            "type" : "number",
+            "description" : "카테고리 아이디"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "게시글 내용"
+          }
+        }
+      },
+      "BoardSearchRequest" : {
+        "title" : "BoardSearchRequest",
+        "type" : "object",
+        "properties" : {
+          "pageNo" : {
+            "type" : "number",
+            "description" : "페이지 번호"
+          },
+          "pageSize" : {
+            "type" : "number",
+            "description" : "페이지 사이즈"
+          },
+          "sortBy" : {
+            "type" : "string",
+            "description" : "정렬 조건"
+          }
+        }
+      },
+      "CategoryUpdateRequest" : {
+        "title" : "CategoryUpdateRequest",
+        "type" : "object",
+        "properties" : {
+          "deleted" : {
+            "type" : "boolean",
+            "description" : "삭제 여부"
+          },
+          "engName" : {
+            "type" : "string",
+            "description" : "영문 이름"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "이름"
+          },
+          "orders" : {
+            "type" : "number",
+            "description" : "순서"
+          }
+        }
+      },
+      "BoardsFindResponse" : {
+        "title" : "BoardsFindResponse",
+        "type" : "object",
+        "properties" : {
+          "boards" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : {
+                "likesCount" : {
+                  "type" : "number",
+                  "description" : "좋아요 개수"
+                },
+                "subject" : {
+                  "type" : "string",
+                  "description" : "게시글 제목"
+                },
+                "readCount" : {
+                  "type" : "number",
+                  "description" : "조회수"
+                },
+                "category" : {
+                  "type" : "string",
+                  "description" : "카테고리 이름"
+                },
+                "tagNames" : {
+                  "type" : "array",
+                  "description" : "태그이름",
+                  "items" : {
+                    "oneOf" : [ {
+                      "type" : "object"
+                    }, {
+                      "type" : "boolean"
+                    }, {
+                      "type" : "string"
+                    }, {
+                      "type" : "number"
+                    } ]
+                  }
+                },
+                "content" : {
+                  "type" : "string",
+                  "description" : "게시글 내용"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CategoryCreateRequest" : {
+        "title" : "CategoryCreateRequest",
+        "type" : "object",
+        "properties" : {
+          "engName" : {
+            "type" : "string",
+            "description" : "영문 이름"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "이름"
+          },
+          "orders" : {
+            "type" : "number",
+            "description" : "순서"
+          }
+        }
+      },
+      "BoardCreateRequest" : {
+        "title" : "BoardCreateRequest",
+        "type" : "object",
+        "properties" : {
+          "subject" : {
+            "type" : "string",
+            "description" : "게시글 제목"
+          },
+          "content" : {
+            "type" : "string",
+            "description" : "게시글 내용"
+          },
+          "tagNames" : {
+            "type" : "array",
+            "description" : "태그명",
+            "items" : {
+              "oneOf" : [ {
+                "type" : "object"
+              }, {
+                "type" : "boolean"
+              }, {
+                "type" : "string"
+              }, {
+                "type" : "number"
+              } ]
+            }
+          },
+          "categoryId" : {
+            "type" : "number",
+            "description" : "카테고리 아이디"
+          }
+        }
+      }
+    }
   }
 }
