@@ -32,7 +32,7 @@ public class LikesCommandApiDocsControllerTest extends DocsControllerTest {
     void 좋아요_생성_요청() throws Exception {
 
         // given
-        when(boardRepository.findByBoardId(BOARD1_CAT1_MEM1.getId()))
+        when(boardRepository.findById(BOARD1_CAT1_MEM1.getId()))
                 .thenReturn(Optional.of(BOARD1_CAT1_MEM1));
         when(memberRepository.findById(MEMBER1.getId()))
                 .thenReturn(Optional.of(MEMBER1));
@@ -63,7 +63,7 @@ public class LikesCommandApiDocsControllerTest extends DocsControllerTest {
     @Test
     void 좋아요_삭제_요청() throws Exception {
         // given
-        when(boardRepository.findByBoardId(BOARD1_CAT1_MEM1.getId()))
+        when(boardRepository.findById(BOARD1_CAT1_MEM1.getId()))
                 .thenReturn(Optional.of(BOARD1_CAT1_MEM1));
         when(memberRepository.findById(MEMBER1.getId()))
                 .thenReturn(Optional.of(MEMBER1));

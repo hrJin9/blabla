@@ -79,7 +79,7 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
     void 한_게시글_조회_요청() throws Exception {
 
         // given
-        when(boardRepository.findByBoardId(BOARD1_CAT1_MEM1.getId()))
+        when(boardRepository.findById(BOARD1_CAT1_MEM1.getId()))
                 .thenReturn(Optional.of(BOARD1_CAT1_MEM1));
         when(boardFindService.findBoardAndRead(BOARD1_CAT1_MEM1.getId()))
                 .thenReturn(BoardFindResultDto.from(BOARD1_CAT1_MEM1));

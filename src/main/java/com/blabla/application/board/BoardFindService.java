@@ -46,7 +46,7 @@ public class BoardFindService {
     @Transactional
     public BoardFindResultDto findBoardAndRead(Long boardId) {
 
-        Board board = boardRepository.findByBoardId(boardId)
+        Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("게시글이 존재하지 않습니다."));
 
         // 조회수를 증가시킨다.

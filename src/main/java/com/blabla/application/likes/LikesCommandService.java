@@ -24,7 +24,7 @@ public class LikesCommandService {
     @Transactional
     public Long createOrDeleteLikes(Long memberId, Long boardId) {
 
-        Board board = boardRepository.findByBoardId(boardId)
+        Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException("존재하지 않는 게시글입니다."));
         Member member = memberRepository.getReferenceById(memberId);
 
