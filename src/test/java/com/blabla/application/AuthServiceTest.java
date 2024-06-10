@@ -8,6 +8,7 @@ import com.blabla.entity.BlackList;
 import com.blabla.entity.Member;
 import com.blabla.exception.LoginUnAuthorizedException;
 import com.blabla.exception.AuthBadRequestException;
+import com.blabla.exception.MemberNotFoundException;
 import com.blabla.repository.auth.BlackListRepository;
 import com.blabla.repository.member.MemberRepository;
 import com.blabla.util.TokenGenerator;
@@ -58,7 +59,7 @@ public class AuthServiceTest {
 
         // when, then
         assertThat(authService.register(memberCreateDto))
-                .isEqualTo(memberCreateDto.email());
+                .isEqualTo(member.getId());
     }
 
     @Test
@@ -85,7 +86,7 @@ public class AuthServiceTest {
 
         // when, then
         assertThatThrownBy(() -> authService.login(memberLoginDto))
-                .isInstanceOf(AuthBadRequestException.class);
+                .isInstanceOf(MemberNotFoundException.class);
     }
 
     @Test

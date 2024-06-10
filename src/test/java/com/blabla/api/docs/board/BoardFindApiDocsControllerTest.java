@@ -33,7 +33,7 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
 
         // given
         final List<Board> boards = List.of(BOARD1_CAT1_MEM1, BOARD2_CAT1_MEM2, BOARD3_CAT1_MEM3);
-        final BoardSearchRequest boardSearchRequest = new BoardSearchRequest(0, 5, "createdAt");
+        final BoardSearchRequest boardSearchRequest = new BoardSearchRequest(0, 5, "createdAt", null, null);
         final Pageable pageable = PageRequest.of(boardSearchRequest.pageNo(), boardSearchRequest.pageSize(), Sort.by(boardSearchRequest.sortBy()).descending());
 
         when(boardRepository.findAllBoards(pageable))
@@ -58,7 +58,9 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                                         .requestFields(
                                                 fieldWithPath("pageNo").description("페이지 번호"),
                                                 fieldWithPath("pageSize").description("페이지 사이즈"),
-                                                fieldWithPath("sortBy").description("정렬 조건")
+                                                fieldWithPath("sortBy").description("정렬 조건"),
+                                                fieldWithPath("searchCondition").description("검색 조건"),
+                                                fieldWithPath("searchKeyword").description("검색 키워드")
                                         )
                                         .responseFields(
                                                 fieldWithPath("boards[].subject").description("게시글 제목"),
@@ -117,7 +119,7 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
 
         // given
         final List<Board> boards = List.of(BOARD1_CAT1_MEM1, BOARD2_CAT1_MEM2, BOARD3_CAT1_MEM3);
-        final BoardSearchRequest boardSearchRequest = new BoardSearchRequest(0, 5, "createdAt");
+        final BoardSearchRequest boardSearchRequest = new BoardSearchRequest(0, 5, "createdAt", null, null);
         final Pageable pageable = PageRequest.of(boardSearchRequest.pageNo(), boardSearchRequest.pageSize(), Sort.by(boardSearchRequest.sortBy()).descending());
 
         when(boardRepository.findAllBoardsByMemberId(pageable, MEMBER1.getId()))
@@ -142,7 +144,9 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                                         .requestFields(
                                                 fieldWithPath("pageNo").description("페이지 번호"),
                                                 fieldWithPath("pageSize").description("페이지 사이즈"),
-                                                fieldWithPath("sortBy").description("정렬 조건")
+                                                fieldWithPath("sortBy").description("정렬 조건"),
+                                                fieldWithPath("searchCondition").description("검색 조건"),
+                                                fieldWithPath("searchKeyword").description("검색 키워드")
                                         )
                                         .responseFields(
                                                 fieldWithPath("boards[].subject").description("게시글 제목"),

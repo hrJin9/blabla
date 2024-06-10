@@ -48,10 +48,9 @@ public class AuthControllerTest extends DocsControllerTest {
                                 ResourceSnippetParameters.builder()
                                         .tag("인증")
                                         .description("회원 가입")
-                                        .requestHeaders(headerWithName("Authorization").description("Bearer"))
                                         .requestSchema(Schema.schema("MemberCreateRequest"))
                                         .build())))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test

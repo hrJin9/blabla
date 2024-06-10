@@ -2,10 +2,13 @@ package com.blabla.repository;
 
 import com.blabla.entity.Member;
 import com.blabla.repository.member.MemberRepository;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
@@ -21,6 +24,9 @@ public class MemberRepositoryTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @MockBean
+    private JPAQueryFactory jpaQueryFactory;
 
     @Test
     void 주어진_이메일에_맞는_사용자를_조회한다() {

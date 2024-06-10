@@ -43,7 +43,7 @@ public class CategoryFindApiDocsControllerTest extends DocsControllerTest {
 
         // when, then
         mockMvc.perform(RestDocumentationRequestBuilders
-                        .get("/api/categories")
+                        .get("/api/categories/no-cache")
                 )
                 .andDo(document("categories/find-categories",
                         preprocessRequest(prettyPrint()),
