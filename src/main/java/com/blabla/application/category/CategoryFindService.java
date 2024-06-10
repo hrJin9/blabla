@@ -26,7 +26,7 @@ public class CategoryFindService {
                 .toList();
     }
 
-    @Cacheable(value = "categoryRepository.findAll")
+    @Cacheable(value = "findAllCategories")
     public List<CategoryFindResultDto> findCategoriesUsingCache() {
         List<Category> categories = categoryRepository.findAll();
         return categories.stream()

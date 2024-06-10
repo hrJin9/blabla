@@ -65,8 +65,13 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 	// ehcache
-	implementation group: 'net.sf.ehcache', name: 'ehcache', version: '2.10.6'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: '2.6.3'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'javax.cache:cache-api:1.1.1'
+	implementation 'org.ehcache:ehcache:3.9.0'
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	implementation 'org.glassfish.jaxb:jaxb-core:2.3.0.1'
+	implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
+
 }
 
 swaggerSources {
