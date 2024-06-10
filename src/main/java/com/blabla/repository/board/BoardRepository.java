@@ -8,27 +8,25 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
-public interface BoardRepository extends JpaRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long>, CustomBoardRepository {
 
-    @Query(value = "SELECT b FROM Board b " +
-            "left join fetch b.category "
-            , countQuery = "select count(b.id) from Board b")
+    @Query("SELECT b FROM Board b " +
+            "JOIN FETCH b.category ")
     Page<Board> findAllBoards(Pageable pageable);
 
-    @Query(value = "SELECT b FROM Board b " +
-            "left join fetch b.category " +
+    @Query("SELECT b FROM Board b " +
+            "JOIN FETCH b.category " +
             "where b.writer.id = :memberId")
     Page<Board> findAllBoardsByMemberId(Pageable pageable, Long memberId);
 
-    @Query(value = "SELECT b " +
+    @Query("SELECT b " +
             "FROM Board b " +
-            "left join fetch b.category " +
-            "WHERE b.category.engName = :engName"
-            , countQuery = "select count(b.id) from Board b where b.category.engName = :engName")
+            "JOIN FETCH b.category " +
+            "WHERE b.category.engName = :engName")
     Page<Board> findBoardsByCategoryName(Pageable pageable, String engName);
 
     @Query("SELECT b FROM Board b " +
-            "LEFT JOIN FETCH b.category " +
+            "JOIN FETCH b.category " +
             "JOIN FETCH b.likes l " +
             "WHERE l.liker.id = :memberId")
     Page<Board> findLikedBoardsByMemberId(Long memberId, Pageable pageable);

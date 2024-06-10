@@ -1,0 +1,70 @@
+package com.blabla.repository.board;
+
+import com.blabla.entity.Board;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPQLQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+import static com.blabla.entity.QBoard.board;
+
+@Repository
+public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport implements CustomBoardRepository {
+
+    private final JPAQueryFactory queryFactory;
+
+    public CustomBoardRepositoryImpl(JPAQueryFactory queryFactory) {
+        super(Board.class);
+        this.queryFactory = queryFactory;
+    }
+
+    @Override
+    public Page<Board> searchBoards(Pageable pageable, String searchCondition, String searchKeyword) {
+
+        JPQLQuery<Board> query = queryFactory
+                .selectFrom(board)
+                .join(board.category)
+                .fetchJoin()
+                .where(searchBoardsWhere(searchCondition, searchKeyword));
+
+        List<Board> boards = this.getQuerydsl()
+                .applyPagination(pageable, query)
+                .fetch();
+        return new PageImpl<Board>((boards), pageable, query.fetchCount());
+    }
+
+    private BooleanExpression searchBoardsWhere(String searchCondition, String searchKeyword) {
+        if(StringUtils.isEmpty(searchCondition))
+            return null;
+        if (searchCondition.equals("subject")) {
+            return subjectContains(searchKeyword);
+        }
+        if (searchCondition.equals("content")) {
+            return contentContains(searchKeyword);
+        }
+        if (searchCondition.equals("writerLoginId")) {
+            return writerIdContains(searchKeyword);
+        }
+        return null;
+    }
+
+    private BooleanExpression subjectContains(String subject) {
+        return (StringUtils.isEmpty(subject)) ? null : board.subject.contains(subject);
+    }
+
+    private BooleanExpression contentContains(String content) {
+        return (StringUtils.isEmpty(content)) ? null : board.content.contains(content);
+    }
+
+    private BooleanExpression writerIdContains(String writerLoginId) {
+        return (StringUtils.isEmpty(writerLoginId)) ? null : board.writer.loginId.contains(writerLoginId);
+    }
+
+}

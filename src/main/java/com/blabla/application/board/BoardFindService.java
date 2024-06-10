@@ -22,12 +22,13 @@ public class BoardFindService {
 
     private final BoardRepository boardRepository;
 
-    // TODO: 인덱스 활용하기
     @Transactional(readOnly = true)
     public List<BoardFindResultDto> findAllBoards(BoardSearchDto boardSearchDto) {
 
         Pageable pageable = PageRequest.of(boardSearchDto.pageNo(), boardSearchDto.pageSize(), Sort.by(boardSearchDto.sortBy()).descending());
-        Page<Board> boardPage = boardRepository.findAllBoards(pageable);
+//        Page<Board> boardPage = boardRepository.findAllBoards(pageable);
+        Page<Board> boardPage = boardRepository.searchBoards(pageable, boardSearchDto.searchCondition(), boardSearchDto.searchKeyword());
+
         return boardPage.stream()
                 .map(BoardFindResultDto::from)
                 .toList();
