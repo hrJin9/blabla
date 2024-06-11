@@ -133,7 +133,7 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(boardSearchRequest))
                 )
-                .andDo(document("/boards/find-boards-by-member",
+                .andDo(document("boards/find-boards-by-member",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         resource(
