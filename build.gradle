@@ -33,7 +33,7 @@ repositories {
 
 swaggerSources {
 	sample {
-		setInputFile(file("${project.buildDir}/api-spec/openapi3.json"))
+		setInputFile(file("/config/openapi3.json"))
 	}
 }
 
