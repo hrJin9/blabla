@@ -32,7 +32,7 @@ repositories {
 }
 
 swaggerSources {
-	sample {
+	blabla {
 		setInputFile(file("${projectDir}/config/openapi3.json"))
 	}
 }
@@ -75,6 +75,10 @@ dependencies {
 	implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
 }
 
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
 openapi3 {
 	setServer("http://localhost:8080")
 	title = "블라블라 API Docs"
@@ -83,19 +87,14 @@ openapi3 {
 	format = "json"
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
-}
-
-tasks.withType(GenerateSwaggerUI) {
+tasks.register('genereateSwaggerUIFromDocker', GenerateSwaggerUI) {
 	dependsOn 'openapi3'
 }
 
 tasks.register('copySwaggerUI', Copy) {
-	dependsOn 'generateSwaggerUISample'
-	def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
+	dependsOn 'genereateSwaggerUIFromDocker'
 
-	from("${generateSwaggerUISampleTask.outputDir}")
+	from("${genereateSwaggerUIFromDocker.outputDir}")
 	into("${project.buildDir}/resources/main/static/docs")
 }
 
