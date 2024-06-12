@@ -9,9 +9,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.4'
-	id "org.asciidoctor.jvm.convert" version "3.3.2"
 	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
-	id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'com.blabla'
@@ -25,7 +23,6 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-	asciidoctorExt
 	querydsl.extendsFrom compileClasspath
 }
 
@@ -54,10 +51,7 @@ dependencies {
 
 	// Swagger + REST Docs
 	testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
-	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
-	swaggerUI 'org.webjars:swagger-ui:4.11.1'
 
 	// jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -74,57 +68,16 @@ dependencies {
 
 }
 
-swaggerSources {
-	sample {
-		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
-	}
-}
-
 openapi3 {
 	setServer("http://localhost:8080")
 	title = "블라블라 API Docs"
 	description = "블라블라 API 명세서"
 	version = "0.0.1"
 	format = "json"
-	outputFileNamePrefix = "open-api-3.0.1"
-	outputDirectory = 'build/resources/main/static/docs'
-}
-
-tasks.withType(GenerateSwaggerUI).configureEach {
-	dependsOn 'openapi3'
-
-	delete file('src/main/resources/static/docs/')
-	copy {
-		from "build/resources/main/static/docs"
-		into "src/main/resources/static/docs"
-	}
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-	outputs.dir 'build/generated-snippets'
-}
-
-tasks.named("bootJar") {
-	dependsOn asciidoctor
-	from("${asciidoctor.outputDir}") {
-		into 'static/docs'
-	}
-	dependsOn(':openapi3')
-}
-
-asciidoctor.doFirst {
-	delete file('src/main/resources/static/docs')
-}
-
-tasks.register('copyDocument', Copy) {
-	dependsOn asciidoctor
-	from file("$buildDir/docs/asciidoc")
-	into file("src/main/resources/static/docs")
-}
-
-tasks.named("build") {
-	dependsOn copyDocument
 }
 
 def generated = "src/main/generated"
