@@ -6,7 +6,6 @@ import com.blabla.api.board.response.BoardsFindResponse;
 import com.blabla.application.board.BoardFindService;
 import com.blabla.application.board.dto.BoardFindResultDto;
 import com.blabla.application.board.dto.BoardSearchDto;
-import com.blabla.config.resolver.AuthInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +21,12 @@ public class BoardFindApiController {
 
     @GetMapping("/boards")
     public ResponseEntity<BoardsFindResponse> findAllBoards(
-            @RequestBody BoardSearchRequest boardSearchRequest
+            @RequestParam(value = "page-no", required = false) Integer pageNo,
+            @RequestParam(value = "search", required = false) String searchCondition,
+            @RequestParam(value = "keyword", required = false) String searchKeyword
     ) {
+
+        final BoardSearchRequest boardSearchRequest = BoardSearchRequest.of(pageNo, searchCondition, searchKeyword);
 
         List<BoardFindResultDto> dtos = boardFindService.findAllBoards(BoardSearchDto.from(boardSearchRequest));
         List<BoardFindResponse> boards = dtos.stream()
@@ -46,9 +49,13 @@ public class BoardFindApiController {
 
     @GetMapping("/members/{memberId}/boards")
     public ResponseEntity<BoardsFindResponse> findAllBoardsByMemberId(
-            @RequestBody BoardSearchRequest boardSearchRequest,
+            @RequestParam(value = "page-no", required = false) Integer pageNo,
+            @RequestParam(value = "search", required = false) String searchCondition,
+            @RequestParam(value = "keyword", required = false) String searchKeyword,
             @PathVariable Long memberId
     ) {
+
+        final BoardSearchRequest boardSearchRequest = BoardSearchRequest.of(pageNo, searchCondition, searchKeyword);
 
         List<BoardFindResultDto> dtos = boardFindService.findAllBoardsByMemberId(BoardSearchDto.from(boardSearchRequest), memberId);
         List<BoardFindResponse> boards = dtos.stream()

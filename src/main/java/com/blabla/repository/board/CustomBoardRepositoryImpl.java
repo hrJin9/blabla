@@ -41,7 +41,7 @@ public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     private BooleanExpression searchBoardsWhere(String searchCondition, String searchKeyword) {
-        if(!StringUtils.hasText(searchCondition)) {
+        if(StringUtils.hasText(searchCondition)) {
             if (searchCondition.equals("subject")) {
                 return subjectContains(searchKeyword);
             }
