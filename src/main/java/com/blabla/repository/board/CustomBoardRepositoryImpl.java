@@ -41,16 +41,16 @@ public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     private BooleanExpression searchBoardsWhere(String searchCondition, String searchKeyword) {
-        if(StringUtils.isEmpty(searchCondition))
-            return null;
-        if (searchCondition.equals("subject")) {
-            return subjectContains(searchKeyword);
-        }
-        if (searchCondition.equals("content")) {
-            return contentContains(searchKeyword);
-        }
-        if (searchCondition.equals("writerLoginId")) {
-            return writerIdContains(searchKeyword);
+        if(!StringUtils.isEmpty(searchCondition)) {
+            if (searchCondition.equals("subject")) {
+                return subjectContains(searchKeyword);
+            }
+            if (searchCondition.equals("content")) {
+                return contentContains(searchKeyword);
+            }
+            if (searchCondition.equals("writerLoginId")) {
+                return writerIdContains(searchKeyword);
+            }
         }
         return null;
     }
