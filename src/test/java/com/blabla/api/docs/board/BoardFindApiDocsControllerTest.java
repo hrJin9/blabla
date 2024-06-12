@@ -92,7 +92,7 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                         preprocessResponse(prettyPrint()),
                         resource(
                                 ResourceSnippetParameters.builder()
-                                        .tag("게시판")
+                                        .tag("게시판 API")
                                         .description("한 게시글 조회")
                                         .pathParameters(
                                                 ResourceDocumentation.parameterWithName("boardId").description("게시글 아이디")
