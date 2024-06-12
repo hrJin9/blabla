@@ -4,12 +4,12 @@ import com.blabla.entity.Board;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     private BooleanExpression searchBoardsWhere(String searchCondition, String searchKeyword) {
-        if(!StringUtils.isEmpty(searchCondition)) {
+        if(!StringUtils.hasText(searchCondition)) {
             if (searchCondition.equals("subject")) {
                 return subjectContains(searchKeyword);
             }
@@ -56,15 +56,15 @@ public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     private BooleanExpression subjectContains(String subject) {
-        return (StringUtils.isEmpty(subject)) ? null : board.subject.contains(subject);
+        return (StringUtils.hasText(subject)) ? null : board.subject.contains(subject);
     }
 
     private BooleanExpression contentContains(String content) {
-        return (StringUtils.isEmpty(content)) ? null : board.content.contains(content);
+        return (StringUtils.hasText(content)) ? null : board.content.contains(content);
     }
 
     private BooleanExpression writerIdContains(String writerLoginId) {
-        return (StringUtils.isEmpty(writerLoginId)) ? null : board.writer.loginId.contains(writerLoginId);
+        return (StringUtils.hasText(writerLoginId)) ? null : board.writer.loginId.contains(writerLoginId);
     }
 
 }
