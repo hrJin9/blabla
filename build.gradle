@@ -33,7 +33,7 @@ repositories {
 
 swaggerSources {
 	blabla {
-		setInputFile(file("${projectDir}/config/openapi3.json"))
+		setInputFile(file("/config/openapi3.json"))
 	}
 }
 
@@ -87,14 +87,14 @@ openapi3 {
 	format = "json"
 }
 
-tasks.register('genereateSwaggerUIFromDocker', GenerateSwaggerUI) {
+tasks.register('generateSwaggerUIBlabla', GenerateSwaggerUI) {
 	dependsOn 'openapi3'
 }
 
 tasks.register('copySwaggerUI', Copy) {
-	dependsOn 'genereateSwaggerUIFromDocker'
+	dependsOn 'generateSwaggerUIBlabla'
 
-	from("${genereateSwaggerUIFromDocker.outputDir}")
+	from("${generateSwaggerUIBlabla.outputDir}")
 	into("${project.buildDir}/resources/main/static/docs")
 }
 
