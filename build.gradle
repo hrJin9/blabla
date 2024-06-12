@@ -87,13 +87,14 @@ openapi3 {
 	format = "json"
 }
 
-tasks.register('generateSwaggerUIBlabla', GenerateSwaggerUI) {
+tasks.withType(GenerateSwaggerUI) {
 	dependsOn 'openapi3'
 }
 
 tasks.register('copySwaggerUI', Copy) {
 	dependsOn 'generateSwaggerUIBlabla'
 
+	def generateSwaggerUISampleTask = tasks.named('generateSwaggerUIBlabla', GenerateSwaggerUI).get()
 	from("${generateSwaggerUIBlabla.outputDir}")
 	into("${project.buildDir}/resources/main/static/docs")
 }
