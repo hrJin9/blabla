@@ -33,19 +33,20 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
 
         // given
         final List<Board> boards = List.of(BOARD1_CAT1_MEM1, BOARD2_CAT1_MEM2, BOARD3_CAT1_MEM3);
-        final BoardSearchRequest boardSearchRequest = new BoardSearchRequest(0, 5, "createdAt", null, null);
+        final BoardSearchRequest boardSearchRequest = BoardSearchRequest.of(0, "subject", "999");
         final Pageable pageable = PageRequest.of(boardSearchRequest.pageNo(), boardSearchRequest.pageSize(), Sort.by(boardSearchRequest.sortBy()).descending());
 
-        when(boardRepository.findAllBoards(pageable))
+        when(boardRepository.searchBoards(pageable, boardSearchRequest.searchCondition(), boardSearchRequest.searchKeyword()))
                 .thenReturn(new PageImpl<>(boards));
         when(boardFindService.findAllBoards(BoardSearchDto.from(boardSearchRequest)))
-                .thenReturn(List.of(BoardFindResultDto.from(BOARD1_CAT1_MEM1), BoardFindResultDto.from(BOARD2_CAT1_MEM2), BoardFindResultDto.from(BOARD3_CAT1_MEM3)));
+                .thenReturn(boards.stream().map(BoardFindResultDto::from).toList());
 
         // when, then
         mockMvc.perform(RestDocumentationRequestBuilders
                         .get("/api/boards")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(boardSearchRequest))
+                        .queryParam("page-no", "0")
+                        .queryParam("search", "subject")
+                        .queryParam("keyword", "999")
                 )
                 .andDo(document("boards/find-boards",
                         preprocessRequest(prettyPrint()),
@@ -55,13 +56,10 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                                         .tag("게시판 API")
                                         .summary("게시판 조회 API")
                                         .description("모든 게시글 페이징 조회")
-                                        .requestFields(
-                                                fieldWithPath("pageNo").description("페이지 번호"),
-                                                fieldWithPath("pageSize").description("페이지 사이즈"),
-                                                fieldWithPath("sortBy").description("정렬 조건"),
-                                                fieldWithPath("searchCondition").description("검색 조건"),
-                                                fieldWithPath("searchKeyword").description("검색 키워드")
-                                        )
+                                        .queryParameters(
+                                                ResourceDocumentation.parameterWithName("page-no").description("페이지 번호"),
+                                                ResourceDocumentation.parameterWithName("search").description("검색 조건"),
+                                                ResourceDocumentation.parameterWithName("keyword").description("검색어"))
                                         .responseFields(
                                                 fieldWithPath("boards[].subject").description("게시글 제목"),
                                                 fieldWithPath("boards[].content").description("게시글 내용"),
@@ -70,7 +68,6 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                                                 fieldWithPath("boards[].readCount").description("조회수"),
                                                 fieldWithPath("boards[].likesCount").description("좋아요 개수")
                                         )
-                                        .requestSchema(Schema.schema("BoardSearchRequest"))
                                         .responseSchema(Schema.schema("BoardsFindResponse"))
                                         .build()
                         )))
@@ -119,7 +116,7 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
 
         // given
         final List<Board> boards = List.of(BOARD1_CAT1_MEM1, BOARD2_CAT1_MEM2, BOARD3_CAT1_MEM3);
-        final BoardSearchRequest boardSearchRequest = new BoardSearchRequest(0, 5, "createdAt", null, null);
+        final BoardSearchRequest boardSearchRequest = BoardSearchRequest.of(0, "content", "1234");
         final Pageable pageable = PageRequest.of(boardSearchRequest.pageNo(), boardSearchRequest.pageSize(), Sort.by(boardSearchRequest.sortBy()).descending());
 
         when(boardRepository.findAllBoardsByMemberId(pageable, MEMBER1.getId()))
@@ -130,8 +127,9 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
         // when, then
         mockMvc.perform(RestDocumentationRequestBuilders
                         .get("/api/members/{memberId}/boards", MEMBER1.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(boardSearchRequest))
+                        .queryParam("page-no", "0")
+                        .queryParam("search", "content")
+                        .queryParam("keyword", "1234")
                 )
                 .andDo(document("boards/find-boards-by-member",
                         preprocessRequest(prettyPrint()),
@@ -141,13 +139,10 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                                         .tag("게시판 API")
                                         .summary("게시판 조회 API")
                                         .description("모든 게시글 페이징 조회")
-                                        .requestFields(
-                                                fieldWithPath("pageNo").description("페이지 번호"),
-                                                fieldWithPath("pageSize").description("페이지 사이즈"),
-                                                fieldWithPath("sortBy").description("정렬 조건"),
-                                                fieldWithPath("searchCondition").description("검색 조건"),
-                                                fieldWithPath("searchKeyword").description("검색 키워드")
-                                        )
+                                        .queryParameters(
+                                                ResourceDocumentation.parameterWithName("page-no").description("페이지 번호"),
+                                                ResourceDocumentation.parameterWithName("search").description("검색 조건"),
+                                                ResourceDocumentation.parameterWithName("keyword").description("검색어"))
                                         .responseFields(
                                                 fieldWithPath("boards[].subject").description("게시글 제목"),
                                                 fieldWithPath("boards[].content").description("게시글 내용"),
@@ -156,7 +151,6 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                                                 fieldWithPath("boards[].readCount").description("조회수"),
                                                 fieldWithPath("boards[].likesCount").description("좋아요 개수")
                                         )
-                                        .requestSchema(Schema.schema("BoardSearchRequest"))
                                         .responseSchema(Schema.schema("BoardsFindResponse"))
                                         .build()
                         )))

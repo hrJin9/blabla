@@ -56,15 +56,15 @@ public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport impleme
     }
 
     private BooleanExpression subjectContains(String subject) {
-        return (StringUtils.hasText(subject)) ? null : board.subject.contains(subject);
+        return (StringUtils.hasText(subject)) ? board.subject.contains(subject) : null;
     }
 
     private BooleanExpression contentContains(String content) {
-        return (StringUtils.hasText(content)) ? null : board.content.contains(content);
+        return (StringUtils.hasText(content)) ? board.content.contains(content) : null;
     }
 
     private BooleanExpression writerIdContains(String writerLoginId) {
-        return (StringUtils.hasText(writerLoginId)) ? null : board.writer.loginId.contains(writerLoginId);
+        return (StringUtils.hasText(writerLoginId)) ? board.writer.loginId.contains(writerLoginId) : null;
     }
 
 }

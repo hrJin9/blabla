@@ -88,7 +88,7 @@ public class CategoryFindApiDocsControllerTest extends DocsControllerTest {
                         .queryParam("page-size", "5")
                         .queryParam("sort-by", "id")
                 )
-                .andDo(document("boards/find-boards",
+                .andDo(document("boards/find-boards-by-category",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         resource(
