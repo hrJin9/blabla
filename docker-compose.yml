@@ -7,7 +7,7 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - ./db/mysql/data:/var/lib/mysql
+      - /home/ubuntu/db/mysql/data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root123
       MYSQL_DATABASE: blabla
@@ -17,20 +17,32 @@ services:
       - blabla
 
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: dallae/blabla-spring
     container_name: blabla-spring
     ports:
       - 8080:8080
     volumes:
-      - ./spring/compose:/compose
+      - /home/ubuntu/spring/compose:/config
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://blabla-mysql:3306/blabla?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: blabla
       SPRING_DATASOURCE_PASSWORD: blabla123
     depends_on:
       - mysql
+    networks:
+      - blabla
+
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: blabla-swagger
+    ports:
+      - 8000:8080
+    restart: on-failure
+    environment:
+      - URLS=[
+        {url:'http://localhost:8080/docs/openapi3.blabla.json', name:'blabla-swagger'},
+        {url:'http://13.209.16.211:8080/docs/openapi3.blabla.json', name:'blabla-swagger-server'},
+      ]
     networks:
       - blabla
 
