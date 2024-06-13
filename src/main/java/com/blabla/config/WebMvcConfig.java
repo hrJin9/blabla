@@ -49,6 +49,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:8000",
                         "http://13.209.16.211:8000"
                 )
+                .exposedHeaders("*")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
                 .allowedHeaders("*")
                 .allowCredentials(true);
