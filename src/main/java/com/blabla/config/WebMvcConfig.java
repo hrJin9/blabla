@@ -30,15 +30,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/static/");
-
-        registry.addResourceHandler("/swagger-ui/**")
-                .addResourceLocations("classpath:/resources/static/docs/");
-    }
-
-    @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(authArgumentResolver);
     }
