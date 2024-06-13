@@ -9,8 +9,8 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.1.1'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.asciidoctor.jvm.convert' version'3.3.2'
 	id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
-	id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'com.blabla'
@@ -29,12 +29,6 @@ configurations {
 
 repositories {
 	mavenCentral()
-}
-
-swaggerSources {
-	blabla {
-		setInputFile(file("/config/openapi3.json"))
-	}
 }
 
 dependencies {
@@ -57,9 +51,9 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	// Swagger + REST Docs
+	implementation 'org.springdoc:springdoc-openapi-ui:1.6.14'
 	testImplementation "com.epages:restdocs-api-spec-mockmvc:${restdocsApiSpecVersion}"
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-	swaggerUI 'org.webjars:swagger-ui:4.11.1'
 
 	// jwt
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
@@ -77,6 +71,7 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	finalizedBy 'openapi3'
 }
 
 openapi3 {
@@ -85,26 +80,10 @@ openapi3 {
 	description = "블라블라 API 명세서"
 	version = "0.0.1"
 	format = "json"
-}
 
-tasks.withType(GenerateSwaggerUI) {
-	dependsOn 'openapi3'
-}
-
-tasks.register('copySwaggerUI', Copy) {
-	dependsOn 'generateSwaggerUIBlabla'
-
-	def generateSwaggerUISampleTask = tasks.named('generateSwaggerUIBlabla', GenerateSwaggerUI).get()
-	from("${generateSwaggerUIBlabla.outputDir}")
-	into("${project.buildDir}/resources/main/static/docs")
-}
-
-tasks.named('bootJar') {
-	dependsOn 'copySwaggerUI'
-}
-
-tasks.named('resolveMainClassName') {
-	dependsOn 'copySwaggerUI'
+	outputDirectory = "src/main/resources/static/docs"
+	outputFileNamePrefix = "openapi3.${project.name}"
+	project.mkdir "${project.projectDir}/${outputDirectory}"
 }
 
 def generated = "src/main/generated"
