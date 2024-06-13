@@ -40,7 +40,6 @@ services:
     restart: on-failure
     environment:
       - URLS=[
-        {url:'http://localhost:8080/docs/openapi3.blabla.json', name:'blabla-swagger'},
         {url:'http://13.209.16.211:8080/docs/openapi3.blabla.json', name:'blabla-swagger-server'}
       ]
     networks:
