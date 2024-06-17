@@ -4,6 +4,7 @@ import com.blabla.config.interceptor.AuthInterceptor;
 import com.blabla.config.resolver.AuthArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -14,8 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    private static final String[] excludePaths = {"/swagger-ui/**","/api/docs/**", "/docs/**"};
-    private static final String[] apiExcludePaths = {"/api/auth/login", "/api/auth/register", "/api/boards/**", "/api/categories/**", "/api/likes/**", "/api/tags/**"};
 
     private final AuthInterceptor authInterceptor;
     private final AuthArgumentResolver authArgumentResolver;
@@ -23,9 +22,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/api/**")
-                .excludePathPatterns(excludePaths)
-                .excludePathPatterns(apiExcludePaths);
+                .addPathPatterns("/api/command/**");
     }
 
     @Override
@@ -36,8 +33,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOrigins("http://13.209.16.211:8000/", "http://13.209.16.211:8000")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
+                .exposedHeaders(HttpHeaders.AUTHORIZATION)
                 .allowedHeaders("*");
     }
 }
