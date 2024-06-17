@@ -32,12 +32,9 @@ services:
     image: swaggerapi/swagger-ui
     container_name: blabla-swagger
     ports:
-      - 8000:8000
+      - 8000:8080
     restart: on-failure
     volumes:
-      - /home/ubuntu/spring/compose:/config/docs
+      - /home/ubuntu/spring/compose/openapi3.blabla.json:/config/docs/openapi3.blabla.json
     environment:
-      - URLS=[
-        {url:'http://blabla-spring:8080/docs/openapi3.blabla.json', name:'blabla-swagger'}
-        {url:'docs/openapi3.blabla.json', name:'blabla-swagger-local'}
-        ]
+      SWAGGER_JSON: /config/docs/openapi3.blabla.json
