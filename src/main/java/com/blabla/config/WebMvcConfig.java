@@ -35,7 +35,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://13.209.16.211:8000/", "http://13.209.16.211:8000")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
-                .exposedHeaders(HttpHeaders.AUTHORIZATION)
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .exposedHeaders("Access-Control-Allow-Origin")
+                .allowCredentials(true);
     }
 }
