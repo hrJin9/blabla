@@ -3,6 +3,7 @@ package com.blabla.config;
 import com.blabla.config.interceptor.AuthInterceptor;
 import com.blabla.config.resolver.AuthArgumentResolver;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -11,9 +12,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+    String[] ALLOWED_ORIGINS = {"http://13.209.16.211:8000"};
 
     private final AuthInterceptor authInterceptor;
     private final AuthArgumentResolver authArgumentResolver;
@@ -31,10 +34,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        log.info("allowedOrigins = {}", ALLOWED_ORIGINS);
         registry.addMapping("/**")
                 .allowedHeaders("*")
-//                .allowedOrigins("http://13.209.16.211:8000")
-                .allowedOriginPatterns("*")
+                .allowedOrigins(ALLOWED_ORIGINS)
                 .allowedMethods("*");
     }
 }
