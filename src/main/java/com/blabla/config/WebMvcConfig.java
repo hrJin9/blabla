@@ -33,7 +33,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedHeaders("*")
-                .allowedOrigins("http://13.209.16.211:8000")
+//                .allowedOrigins("http://13.209.16.211:8000")
+                .allowedOriginPatterns("*")
                 .allowedMethods("*");
     }
 }
