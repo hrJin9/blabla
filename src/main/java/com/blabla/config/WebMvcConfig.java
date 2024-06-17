@@ -4,7 +4,6 @@ import com.blabla.config.interceptor.AuthInterceptor;
 import com.blabla.config.resolver.AuthArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -33,10 +32,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://13.209.16.211:8000/", "http://13.209.16.211:8000")
-                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
                 .allowedHeaders("*")
-                .exposedHeaders("Access-Control-Allow-Origin")
-                .allowCredentials(true);
+                .allowedOrigins("http://13.209.16.211:8000")
+                .allowedMethods("*");
     }
 }
