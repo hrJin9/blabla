@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    private static final String[] excludePaths = {"/swagger-ui/**","/api/docs/**", "/docs/**", "/v3/api-docs/", "/docs/open-api-3.0.1.json"};
+    private static final String[] excludePaths = {"/swagger-ui/**","/api/docs/**", "/docs/**"};
     private static final String[] apiExcludePaths = {"/api/auth/login", "/api/auth/register", "/api/boards/**", "/api/categories/**", "/api/likes/**", "/api/tags/**"};
 
     private final AuthInterceptor authInterceptor;
@@ -36,8 +36,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOrigins("http://localhost", "http://13.209.16.211")
                 .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
 }
