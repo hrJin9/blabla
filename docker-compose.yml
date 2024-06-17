@@ -13,8 +13,6 @@ services:
       MYSQL_DATABASE: blabla
       MYSQL_USER: blabla
       MYSQL_PASSWORD: blabla123
-    networks:
-      - blabla
 
   app:
     image: dallae/blabla-spring
@@ -29,21 +27,17 @@ services:
       SPRING_DATASOURCE_PASSWORD: blabla123
     depends_on:
       - mysql
-    networks:
-      - blabla
 
   swagger:
     image: swaggerapi/swagger-ui
     container_name: blabla-swagger
     ports:
-      - 8000:8080
+      - 8000:8000
     restart: on-failure
+    volumes:
+      - /home/ubuntu/spring/compose:/config/docs
     environment:
       - URLS=[
-        {url:'http://13.209.16.211:8080/docs/openapi3.blabla.json', name:'blabla-swagger-server'}
-      ]
-    networks:
-      - blabla
-
-networks:
-  blabla:
+        {url:'http://blabla-spring:8080/docs/openapi3.blabla.json', name:'blabla-swagger'}
+        {url:'docs/openapi3.blabla.json', name:'blabla-swagger-local'}
+        ]
