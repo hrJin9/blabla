@@ -18,13 +18,18 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
     String[] ALLOWED_ORIGINS = {"http://13.209.16.211"};
 
+    private static final String[] excludePaths = {"/swagger-ui/**","/api/docs/**", "/docs/**"};
+    private static final String[] apiExcludePaths = {"/api/auth/login", "/api/auth/register", "/api/boards/**", "/api/categories/**", "/api/likes/**", "/api/tags/**"};
+
     private final AuthInterceptor authInterceptor;
     private final AuthArgumentResolver authArgumentResolver;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/api/command/**");
+                .addPathPatterns("/api/**")
+                .excludePathPatterns(excludePaths)
+                .excludePathPatterns(apiExcludePaths);
     }
 
     @Override

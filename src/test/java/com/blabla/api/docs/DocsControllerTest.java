@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -121,13 +122,13 @@ public abstract class DocsControllerTest {
     @MockBean
     protected LikesRepository likesRepository;
 
-    @SpyBean
+    @MockBean
     protected TokenGenerator tokenGenerator;
 
-    @SpyBean
+    @MockBean
     protected RefreshTokenValidator refreshTokenValidator;
 
-    @SpyBean
+    @MockBean
     protected JwtTokenProvider jwtTokenProvider;
 
 

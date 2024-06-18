@@ -50,7 +50,7 @@ public class AuthService {
 
     @Transactional
     public AuthTokenResponse reissueToken(String refreshToken, Long id) {
-        refreshTokenValidator.validateToken(refreshToken, id);
+        Boolean value = refreshTokenValidator.validateToken(refreshToken, id);
         return tokenGenerator.generate(id);
     }
 

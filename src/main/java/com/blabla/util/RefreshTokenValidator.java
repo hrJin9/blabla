@@ -11,10 +11,11 @@ public class RefreshTokenValidator {
     private final TokenGenerator tokenGenerator;
     private final BlackListRepository blackListRepository;
 
-    public void validateToken(String refreshToken, Long id) {
+    public boolean validateToken(String refreshToken, Long id) {
         if (!refreshTokenValidation(refreshToken, id)) {
             throw new TokenNotValidException("유효하지 않은 refresh Token 입니다.");
         }
+        return true;
     }
 
     private boolean refreshTokenValidation(String refreshToken, Long id) {

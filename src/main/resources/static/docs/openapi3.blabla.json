@@ -1,18 +1,59 @@
 {
   "openapi" : "3.0.1",
   "info" : {
-    "title" : "블라블라 API Docs",
-    "description" : "블라블라 API 명세서",
+    "title" : "블라블라 API 명세서",
+    "description" : "Rest docs with Swagger UI",
     "version" : "0.0.1"
   },
   "servers" : [ {
     "url" : "http://13.209.16.211:8080"
+  }, {
+    "url" : "http://localhost:8080"
   } ],
   "tags" : [ ],
   "paths" : {
+    "/api/auth/login" : {
+      "post" : {
+        "tags" : [ "인증 API" ],
+        "summary" : "로그인",
+        "description" : "로그인",
+        "operationId" : "auth/login",
+        "requestBody" : {
+          "content" : {
+            "application/json;charset=UTF-8" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MemberLoginRequest"
+              },
+              "examples" : {
+                "auth/login" : {
+                  "value" : "{\r\n  \"email\" : \"test@gmail.com\",\r\n  \"password\" : \"password123!@#\"\r\n}"
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "200",
+            "content" : {
+              "application/json;charset=UTF-8" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AuthTokenResponse"
+                },
+                "examples" : {
+                  "auth/login" : {
+                    "value" : "{\r\n  \"accessToken\" : \"a\",\r\n  \"refreshToken\" : \"r\",\r\n  \"grantType\" : \"Bearer\",\r\n  \"expiresIn\" : 1\r\n}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/auth/register" : {
       "post" : {
-        "tags" : [ "인증" ],
+        "tags" : [ "인증 API" ],
         "summary" : "회원 가입",
         "description" : "회원 가입",
         "operationId" : "auth/register",
@@ -168,7 +209,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MzI4MjcxfQ.hs44no5mxEM8iQk8krx58Vnb678IcksZ1RjuWxO687UVScCHmA6UwLlMLZrK70Htq0utWlR89bqjjxItvAnaFw"
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4Nzc2MTQ3fQ.lJ59SfmEAREoJri15yFyYuB4Qmkr0s56UmDE2CE-f3ZEgG9-jaRIlYHI1yr8s-hnNDcTKub_ktkcxJxsb7LA0w"
         } ],
         "requestBody" : {
           "content" : {
@@ -205,7 +246,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MzI4MjcyfQ.tU25dIAcz9NYaXuY8xLhQl9C71CMGu-qAx6CfwPgxZubI5zBG3xl7hF2g3pIWiRrDfVQL-MF_3lpkvA7zJNgWg"
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4Nzc2MTQ4fQ.b-AEQT4BXNm_i_9JUkJb-alF7J6X9iHzk9GeeP8E2hmXM2xc8kF_VRlHN-5ChSUdY33B9UqhU6a65Z3-HqTeEA"
         } ],
         "requestBody" : {
           "content" : {
@@ -308,7 +349,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MzI4MjcxfQ.hs44no5mxEM8iQk8krx58Vnb678IcksZ1RjuWxO687UVScCHmA6UwLlMLZrK70Htq0utWlR89bqjjxItvAnaFw"
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4Nzc2MTQ3fQ.lJ59SfmEAREoJri15yFyYuB4Qmkr0s56UmDE2CE-f3ZEgG9-jaRIlYHI1yr8s-hnNDcTKub_ktkcxJxsb7LA0w"
         } ],
         "responses" : {
           "200" : {
@@ -337,7 +378,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MzI4MjcxfQ.hs44no5mxEM8iQk8krx58Vnb678IcksZ1RjuWxO687UVScCHmA6UwLlMLZrK70Htq0utWlR89bqjjxItvAnaFw"
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4Nzc2MTQ3fQ.lJ59SfmEAREoJri15yFyYuB4Qmkr0s56UmDE2CE-f3ZEgG9-jaRIlYHI1yr8s-hnNDcTKub_ktkcxJxsb7LA0w"
         } ],
         "requestBody" : {
           "content" : {
@@ -382,7 +423,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MzI4MjcyfQ.tU25dIAcz9NYaXuY8xLhQl9C71CMGu-qAx6CfwPgxZubI5zBG3xl7hF2g3pIWiRrDfVQL-MF_3lpkvA7zJNgWg"
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4Nzc2MTQ4fQ.b-AEQT4BXNm_i_9JUkJb-alF7J6X9iHzk9GeeP8E2hmXM2xc8kF_VRlHN-5ChSUdY33B9UqhU6a65Z3-HqTeEA"
         } ],
         "responses" : {
           "200" : {
@@ -411,7 +452,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MzI4MjcyfQ.tU25dIAcz9NYaXuY8xLhQl9C71CMGu-qAx6CfwPgxZubI5zBG3xl7hF2g3pIWiRrDfVQL-MF_3lpkvA7zJNgWg"
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4Nzc2MTQ4fQ.b-AEQT4BXNm_i_9JUkJb-alF7J6X9iHzk9GeeP8E2hmXM2xc8kF_VRlHN-5ChSUdY33B9UqhU6a65Z3-HqTeEA"
         } ],
         "requestBody" : {
           "content" : {
@@ -456,7 +497,7 @@
           "schema" : {
             "type" : "string"
           },
-          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4MzI4MjcyfQ.tU25dIAcz9NYaXuY8xLhQl9C71CMGu-qAx6CfwPgxZubI5zBG3xl7hF2g3pIWiRrDfVQL-MF_3lpkvA7zJNgWg"
+          "example" : "BEARER eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzE4Nzc2MTQ4fQ.b-AEQT4BXNm_i_9JUkJb-alF7J6X9iHzk9GeeP8E2hmXM2xc8kF_VRlHN-5ChSUdY33B9UqhU6a65Z3-HqTeEA"
         } ],
         "responses" : {
           "200" : {
@@ -526,6 +567,28 @@
   },
   "components" : {
     "schemas" : {
+      "AuthTokenResponse" : {
+        "title" : "AuthTokenResponse",
+        "type" : "object",
+        "properties" : {
+          "expiresIn" : {
+            "type" : "number",
+            "description" : "토큰 만료 기간"
+          },
+          "grantType" : {
+            "type" : "string",
+            "description" : "토큰 타입"
+          },
+          "accessToken" : {
+            "type" : "string",
+            "description" : "억세스 토큰"
+          },
+          "refreshToken" : {
+            "type" : "string",
+            "description" : "리프레시 토큰"
+          }
+        }
+      },
       "CategoriesFindResponse" : {
         "title" : "CategoriesFindResponse",
         "type" : "object",
@@ -705,6 +768,24 @@
           }
         }
       },
+      "CategoryCreateRequest" : {
+        "title" : "CategoryCreateRequest",
+        "type" : "object",
+        "properties" : {
+          "engName" : {
+            "type" : "string",
+            "description" : "영문 이름"
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "이름"
+          },
+          "orders" : {
+            "type" : "number",
+            "description" : "순서"
+          }
+        }
+      },
       "BoardCreateRequest" : {
         "title" : "BoardCreateRequest",
         "type" : "object",
@@ -738,24 +819,26 @@
           }
         }
       },
-      "CategoryCreateRequest" : {
-        "title" : "CategoryCreateRequest",
+      "MemberLoginRequest" : {
+        "title" : "MemberLoginRequest",
         "type" : "object",
         "properties" : {
-          "engName" : {
+          "password" : {
             "type" : "string",
-            "description" : "영문 이름"
+            "description" : "비밀번호"
           },
-          "name" : {
+          "email" : {
             "type" : "string",
-            "description" : "이름"
-          },
-          "orders" : {
-            "type" : "number",
-            "description" : "순서"
+            "description" : "이메일"
           }
         }
       }
     }
   }
-}
+}  securitySchemes:
+    APIKey:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - APIKey: []
