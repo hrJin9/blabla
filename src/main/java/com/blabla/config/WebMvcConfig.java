@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    String[] ALLOWED_ORIGINS = {"http://13.209.16.211:8000"};
+    String[] ALLOWED_ORIGINS = {"http://13.209.16.211"};
 
     private final AuthInterceptor authInterceptor;
     private final AuthArgumentResolver authArgumentResolver;
@@ -34,7 +34,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        log.info("allowedOrigins = {}", ALLOWED_ORIGINS);
         registry.addMapping("/**")
                 .allowedHeaders("*")
                 .allowedOrigins(ALLOWED_ORIGINS)
