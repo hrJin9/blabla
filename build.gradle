@@ -101,13 +101,19 @@ tasks.withType(GenerateSwaggerUI) {
 	doFirst {
 		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.json")
 
-		def securitySchemesContent =  "  securitySchemes:\n" +  \
-                                      "    APIKey:\n" +  \
-                                      "      type: apiKey\n" +  \
-                                      "      name: Authorization\n" +  \
-                                      "      in: header\n" + \
-                                      "security:\n" +
-									  "  - APIKey: []"
+		def securitySchemesContent = "  \"securitySchemes\": {\n" +
+									"    \"APIKey\": {\n" +
+									"      \"type\": \"apiKey\",\n" +
+									"      \"name\": \"Authorization\",\n" +
+									"      \"in\": \"header\"\n" +
+									"    }\n" +
+									"  },\n" +
+									"  \"security\": [\n" +
+									"    {\n" +
+									"      \"APIKey\": []\n" +
+									"    }\n" +
+									"  ]"
+
 
 		swaggerUIFile.append securitySchemesContent
 	}
