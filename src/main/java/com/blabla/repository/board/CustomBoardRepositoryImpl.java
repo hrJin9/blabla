@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import java.util.List;
 
 import static com.blabla.entity.QBoard.board;
+import static com.blabla.entity.QCategory.category;
 
 @Repository
 public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport implements CustomBoardRepository {
@@ -30,8 +31,7 @@ public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 
         JPQLQuery<Board> query = queryFactory
                 .selectFrom(board)
-                .join(board.category)
-                .fetchJoin()
+                .join(board.category, category).fetchJoin()
                 .where(searchBoardsWhere(searchCondition, searchKeyword));
 
         List<Board> boards = this.getQuerydsl()

@@ -20,7 +20,6 @@ public record BoardFindResultDto(
                 board.getSubject(),
                 board.getContent(),
                 board.getCategory().getName(),
-//                (ObjectUtils.isEmpty(board.getTags())) ? Collections.emptyList() : List.of(board.getTags().split(",")),
                 board.getBoardHashTags()
                         .stream()
                         .map(boardHashTags -> boardHashTags.getHashTags().getName()).toList(),
