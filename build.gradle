@@ -71,6 +71,12 @@ dependencies {
 	implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
 }
 
+swaggerSources {
+	sample {
+		setInputFile(file("${project.buildDir}/api-spec/openapi3.json"))
+	}
+}
+
 openapi3 {
 	servers = [
 			{url = "http://13.209.16.211:8080"},
@@ -81,16 +87,11 @@ openapi3 {
 	version = "0.0.1"
 	format = "json"
 
-	outputDirectory = "src/main/resources/static/docs"
-	outputFileNamePrefix = "openapi3.${project.name}"
-	project.mkdir "${project.projectDir}/${outputDirectory}"
+//	outputDirectory = "src/main/resources/static/docs"
+//	outputFileNamePrefix = "openapi3.${project.name}"
+//	project.mkdir "${project.projectDir}/${outputDirectory}"
 }
 
-swaggerSources {
-	sample {
-		setInputFile(file("${openapi3.outputDirectory}/openapi3.blabla.json"))
-	}
-}
 
 tasks.named('test') {
 	useJUnitPlatform()
@@ -99,7 +100,7 @@ tasks.named('test') {
 tasks.withType(GenerateSwaggerUI) {
 	dependsOn 'openapi3'
 	doFirst {
-		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.blabla.json")
+		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.json")
 
 		def securitySchemesContent =  "  securitySchemes:\n" +  \
                                       "    APIKey:\n" +  \
@@ -114,7 +115,7 @@ tasks.withType(GenerateSwaggerUI) {
 }
 
 bootJar {
-	dependsOn generateSwaggerUISample
+	dependsOn 'generateSwaggerUISample'
 	from("${generateSwaggerUISample.outputDir}") {
 		into 'static/docs'
 	}
