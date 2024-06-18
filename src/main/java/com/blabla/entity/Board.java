@@ -44,6 +44,9 @@ public class Board extends BaseEntity {
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Likes> likes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "board")
+    private List<BoardHashTags> boardHashTags = new ArrayList<>();
+
     private Boolean deleted = Boolean.FALSE;
 
     @Builder
