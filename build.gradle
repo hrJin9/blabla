@@ -79,8 +79,7 @@ swaggerSources {
 
 openapi3 {
 	servers = [
-			{url = "http://13.209.16.211:8080"},
-			{url = "http://localhost:8080"}
+			{url = "http://13.209.16.211:8080"}
 	]
 	title = "블라블라 API 명세서"
 	description = "Rest docs with Swagger UI"
