@@ -35,6 +35,8 @@ services:
       - 8000:8080
     restart: on-failure
     volumes:
-      - /home/ubuntu/spring/compose/openapi3.blabla.json:/config/docs/openapi3.blabla.json
+      - /home/ubuntu/spring/compose/openapi3.yaml:/config/openapi3.yaml
+      - /home/ubuntu/spring/compose:/usr/share/nginx/html/docs
     environment:
-      SWAGGER_JSON: /config/docs/openapi3.blabla.json
+#      SWAGGER_JSON : /config/openapi3.yaml
+      URLS : "[{ url: 'docs/openapi3.yaml', name: 'agent' }]"
