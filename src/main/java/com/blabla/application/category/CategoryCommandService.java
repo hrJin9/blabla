@@ -9,6 +9,7 @@ import com.blabla.exception.CategoryNotFoundException;
 import com.blabla.repository.category.CategoryRepository;
 import com.blabla.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,7 @@ public class CategoryCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "categoryFindService.findAll", allEntries = true)
     public Long updateCategory(Long memberId, Long categoryId, CategoryUpdateDto categoryUpdateDto) {
 
         Member modifier = memberRepository.getReferenceById(memberId);
@@ -64,6 +66,7 @@ public class CategoryCommandService {
     }
 
     @Transactional
+    @CacheEvict(value = "categoryFindService.findAll", allEntries = true)
     public Long deleteCategory(Long memberId, Long categoryId) {
         Member modifier = memberRepository.getReferenceById(memberId);
         Category deletedCategory = categoryRepository.findById(categoryId)
