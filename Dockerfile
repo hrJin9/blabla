@@ -7,7 +7,7 @@ COPY ${JAR_FILE} app.jar
 
 COPY docker-compose.yml /config/docker-compose.yml
 
-COPY build/api-spec/openapi3.json /config/openapi3.json
+COPY build/api-spec/openapi3.yaml /config/openapi3.yaml
 
 ENTRYPOINT ["java", "-jar", "-Dspring.config.location=file:/config/application.yml", "app.jar"]
 
