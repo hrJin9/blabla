@@ -37,13 +37,13 @@ public class CategoryFindApiDocsControllerTest extends DocsControllerTest {
 
         when(categoryRepository.findAll())
                 .thenReturn(categories);
-        when(categoryFindService.findCategories())
+        when(categoryFindService.findCategoriesUsingCache())
                 .thenReturn(categories.stream()
                         .map(CategoryFindResultDto::from).toList());
 
         // when, then
         mockMvc.perform(RestDocumentationRequestBuilders
-                        .get("/api/categories/no-cache")
+                        .get("/api/categories/cache")
                 )
                 .andDo(document("categories/find-categories",
                         preprocessRequest(prettyPrint()),
@@ -51,7 +51,6 @@ public class CategoryFindApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("카테고리 API")
-                                        .summary("카테고리 조회 API")
                                         .description("모든 카테고리 조회")
                                         .responseFields(
                                                 fieldWithPath("categories[].id").description("카테고리 id"),
@@ -94,7 +93,6 @@ public class CategoryFindApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("카테고리 API")
-                                        .summary("카테고리 조회 API")
                                         .description("카테고리의 게시글 페이징 조회")
                                         .queryParameters(
                                                 ResourceDocumentation.parameterWithName("page-no").description("페이지 번호"),

@@ -58,7 +58,6 @@ public class LikesFindApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("좋아요 API")
-                                        .summary("좋아요 조회 API")
                                         .description("특정 유저의 좋아요한 게시글 조회")
                                         .queryParameters(
                                                 ResourceDocumentation.parameterWithName("page-no").description("페이지 번호"),

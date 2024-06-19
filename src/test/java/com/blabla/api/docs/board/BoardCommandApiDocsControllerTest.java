@@ -56,7 +56,6 @@ public class BoardCommandApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("게시판 API")
-                                        .summary("게시판 커맨드 API")
                                         .description("게시글 작성")
                                         .requestHeaders(
                                                 headerWithName("Authorization").description("Bearer")
@@ -95,7 +94,6 @@ public class BoardCommandApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("게시판 API")
-                                        .summary("게시판 커맨드 API")
                                         .description("게시글 수정")
                                         .requestHeaders(
                                                 headerWithName("Authorization").description("Bearer")
@@ -130,8 +128,7 @@ public class BoardCommandApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("게시판 API")
-                                        .summary("게시판 조회 API")
-                                        .description("모든 게시글 페이징 조회")
+                                        .description("게시글 삭제 요청")
                                         .requestHeaders(
                                                 headerWithName("Authorization").description("Bearer")
                                         )

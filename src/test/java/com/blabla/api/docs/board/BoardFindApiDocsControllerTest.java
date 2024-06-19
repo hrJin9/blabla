@@ -54,7 +54,6 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("게시판 API")
-                                        .summary("게시판 조회 API")
                                         .description("모든 게시글 페이징 조회")
                                         .queryParameters(
                                                 ResourceDocumentation.parameterWithName("page-no").description("페이지 번호"),
@@ -137,8 +136,7 @@ public class BoardFindApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("게시판 API")
-                                        .summary("게시판 조회 API")
-                                        .description("모든 게시글 페이징 조회")
+                                        .description("특정 사용자의 게시글 조회")
                                         .queryParameters(
                                                 ResourceDocumentation.parameterWithName("page-no").description("페이지 번호"),
                                                 ResourceDocumentation.parameterWithName("search").description("검색 조건"),

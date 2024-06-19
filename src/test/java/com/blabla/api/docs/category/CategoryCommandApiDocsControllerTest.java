@@ -55,7 +55,6 @@ public class CategoryCommandApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("카테고리 API")
-                                        .summary("카테고리 커맨드 API")
                                         .description("카테고리 생성")
                                         .requestHeaders(
                                                 headerWithName("Authorization").description("Bearer")
@@ -98,7 +97,6 @@ public class CategoryCommandApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("카테고리 API")
-                                        .summary("카테고리 커맨드 API")
                                         .description("카테고리 수정")
                                         .requestHeaders(
                                                 headerWithName("Authorization").description("Bearer")
@@ -139,7 +137,6 @@ public class CategoryCommandApiDocsControllerTest extends DocsControllerTest {
                         resource(
                                 ResourceSnippetParameters.builder()
                                         .tag("카테고리 API")
-                                        .summary("카테고리 커맨드 API")
                                         .description("카테고리 삭제")
                                         .requestHeaders(
                                                 headerWithName("Authorization").description("Bearer")
