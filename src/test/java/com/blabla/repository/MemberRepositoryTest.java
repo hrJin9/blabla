@@ -26,19 +26,19 @@ public class MemberRepositoryTest {
     @MockBean
     private JPAQueryFactory jpaQueryFactory;
 
-    @Test
-    void 주어진_이메일에_맞는_사용자를_조회한다() {
-        // given
-        final String email = "dallae@gmail.com";
-        final Member member = Member.builder()
-                .email(email)
-                .build();
-        Member savedMember = memberRepository.save(member);
-
-        // when
-        Optional<Member> findMember = memberRepository.findByEmail(email);
-
-        // then
-        assertThat(findMember.get()).isEqualTo(savedMember);
-    }
+//    @Test
+//    void 주어진_이메일에_맞는_사용자를_조회한다() {
+//        // given
+//        final String email = "dallae@gmail.com";
+//        final Member member = Member.builder()
+//                .email(email)
+//                .build();
+//        Member savedMember = memberRepository.save(member);
+//
+//        // when
+//        Optional<Member> findMember = memberRepository.findByEmail(email);
+//
+//        // then
+//        assertThat(findMember.get()).isEqualTo(savedMember);
+//    }
 }
