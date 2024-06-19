@@ -18,7 +18,7 @@ import java.util.List;
 public class WebMvcConfig implements WebMvcConfigurer {
     String[] ALLOWED_ORIGINS = {"http://13.209.16.211:8000",
             "http://13.209.16.211:8080",
-            "http://13.209.16.211:80",
+            "http://13.209.16.211:3000",
             "http://localhost:8000",
             "http://localhost:8080"
             };
