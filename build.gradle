@@ -64,27 +64,24 @@ dependencies {
 
 	// ehcache
 	implementation 'org.springframework.boot:spring-boot-starter-cache'
-	implementation 'javax.cache:cache-api:1.1.1'
-	implementation 'org.ehcache:ehcache:3.9.0'
-	implementation 'javax.xml.bind:jaxb-api:2.3.1'
-	implementation 'org.glassfish.jaxb:jaxb-core:2.3.0.1'
-	implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
+	implementation 'net.sf.ehcache:ehcache:2.10.3'
 }
 
 swaggerSources {
 	sample {
-		setInputFile(file("${project.buildDir}/api-spec/openapi3.json"))
+		setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
 	}
 }
 
 openapi3 {
 	servers = [
-			{url = "http://13.209.16.211:8080"}
+			{url = "http://13.209.16.211:8080"},
+			{url = "http://localhost:8080"}
 	]
 	title = "블라블라 API 명세서"
 	description = "Rest docs with Swagger UI"
 	version = "0.0.1"
-	format = "json"
+	format = "yaml"
 
 //	outputDirectory = "src/main/resources/static/docs"
 //	outputFileNamePrefix = "openapi3.${project.name}"
@@ -99,21 +96,15 @@ tasks.named('test') {
 tasks.withType(GenerateSwaggerUI) {
 	dependsOn 'openapi3'
 	doFirst {
-		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.json")
+		def swaggerUIFile = file("${openapi3.outputDirectory}/openapi3.yaml")
 
-		def securitySchemesContent = "  \"securitySchemes\": {\n" +
-									"    \"APIKey\": {\n" +
-									"      \"type\": \"apiKey\",\n" +
-									"      \"name\": \"Authorization\",\n" +
-									"      \"in\": \"header\"\n" +
-									"    }\n" +
-									"  },\n" +
-									"  \"security\": [\n" +
-									"    {\n" +
-									"      \"APIKey\": []\n" +
-									"    }\n" +
-									"  ]"
-
+		def securitySchemesContent =  "  securitySchemes:\n" +  \
+                                      "    APIKey:\n" +  \
+                                      "      type: apiKey\n" +  \
+                                      "      name: Authorization\n" +  \
+                                      "      in: header\n" + \
+                                      "security:\n" +
+				  						"  - APIKey: []  # Apply the security scheme here"
 
 		swaggerUIFile.append securitySchemesContent
 	}
