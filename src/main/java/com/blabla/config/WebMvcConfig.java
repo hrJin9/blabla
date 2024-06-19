@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    String[] ALLOWED_ORIGINS = {"http://13.209.16.211:8000", "http://13.209.16.211:80"};
+    String[] ALLOWED_ORIGINS = {"http://13.209.16.211:8000", "http://13.209.16.211:80", "http://localhost:8000"};
 
     private static final String[] excludePaths = {"/swagger-ui/**","/api/docs/**", "/docs/**"};
     private static final String[] apiExcludePaths = {"/api/auth/login", "/api/auth/register", "/api/boards/**", "/api/categories/**", "/api/likes/**", "/api/tags/**"};
